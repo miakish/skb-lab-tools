@@ -1,0 +1,40 @@
+<idea-plugin>
+    <id>ru.skb.lab.intellij.plugins.skb-lab-tools</id>
+    <name>SKB lab tools</name>
+    <vendor email="SalnikovSN@skblab.ru" url="">SalnikovSN</vendor>
+
+    <description><![CDATA[
+    <h1>Сreating Java classes using templates inside the plugin</h1>
+    <br/>
+    Can generate Java files (automatic filling of the GIT_BRANCH variable):<br/>
+    <ul>
+        <li>Class</li>
+        <li>Enum</li>
+        <li>Interface</li>
+    </ul>
+    <br/>
+    ]]></description>
+
+    <change-notes><![CDATA[
+    <ul>
+        <li>fix new errors</li>
+        <li>delete deprecated metods</li>
+    </ul>
+    ]]></change-notes>
+
+    <depends>com.intellij.modules.java</depends>
+    <depends>com.intellij.modules.ultimate</depends>
+    <depends>com.intellij.modules.database</depends>
+    <depends>Git4Idea</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <fileTemplateGroup implementation="ru.skb.lab.intellij.plugins.template.FileTemplatesFactory"/>
+    </extensions>
+
+    <actions>
+        <action id="MyFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.MyFileTemplate" text="SKB lab tools">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="WeighingNewGroup"/>
+        </action>
+    </actions>
+</idea-plugin>
