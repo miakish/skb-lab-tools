@@ -1,0 +1,35 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+#parse("File Header.java")
+
+import com.itprofix.soa.cr.SMXCoreMain;
+
+/**
+ * ${GIT_BRANCH} ${DATE}
+ * @author ${USER}
+ * Main class
+ */
+public class ${NAME}Main extends SMXCoreMain {
+
+    public static void main(String... args) throws Exception {
+        instance = new Main();
+        startInstance(args);
+    }
+
+    /**
+     * Добавляем необходимые бины для инициализации
+     */
+    @Override
+    public void doPreInit() {
+        #if (${BEAN} && ${BEAN} != "")addConfigClass(${BEAN}.class);#end
+        #if (${ROUTE_BUILDER} && ${ROUTE_BUILDER} != "")addRouteBuilder(${ROUTE_BUILDER}.class);#end
+    }
+
+    /**
+     * Добавляем необходимые компоненты
+     */
+    public Main() {
+        super();
+        setCreateActiveMQComponent(true);
+        setCreateSSLContextParameters(true);
+    }
+}

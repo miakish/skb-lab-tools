@@ -21,6 +21,9 @@ public class FileTemplatesFactory implements FileTemplateGroupDescriptorFactory 
     descriptor.addTemplate(new FileTemplateDescriptor("SLT_Class.java", AllIcons.Nodes.Class));
     descriptor.addTemplate(new FileTemplateDescriptor("SLT_Enum.java", AllIcons.Nodes.Enum));
     descriptor.addTemplate(new FileTemplateDescriptor("SLT_Interface.java", AllIcons.Nodes.Interface));
+    descriptor.addTemplate(new FileTemplateDescriptor("SLT_Bean.java", AllIcons.Nodes.Class));
+    descriptor.addTemplate(new FileTemplateDescriptor("SLT_Main.java", AllIcons.Actions.Run_anything));
+    descriptor.addTemplate(new FileTemplateDescriptor("SLT_RouteBuilder.java", AllIcons.Nodes.Class));
     return descriptor;
   }
 

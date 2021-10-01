@@ -1,0 +1,16 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+#parse("File Header.java")
+
+import lombok.extern.slf4j.Slf4j;
+import org.apache.camel.BindToRegistry;
+
+/**
+ * ${GIT_BRANCH} ${DATE}
+ * @author ${USER}
+ * ${COMMENT}
+ */
+@Slf4j
+@BindToRegistry("${REG_NAME}")
+public class ${NAME} {
+
+}

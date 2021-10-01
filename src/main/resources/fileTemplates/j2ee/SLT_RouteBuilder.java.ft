@@ -1,0 +1,27 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+#parse("File Header.java")
+
+import lombok.extern.slf4j.Slf4j;
+import org.apache.camel.PropertyInject;
+import org.apache.camel.builder.RouteBuilder;
+
+/**
+ * ${GIT_BRANCH} ${DATE}
+ * @author ${USER}
+ * ${COMMENT}
+ */
+@Slf4j
+public class ${NAME}RouteBuilder extends RouteBuilder {
+
+    private int startupOrder = 300;
+
+    /** Настройка отвечающая за отключение сервиса*/
+    @PropertyInject(value = "service.enable", defaultValue = "true")
+    public boolean enable = true;
+
+    @Override
+    public void configure() {
+
+    }
+
+}
