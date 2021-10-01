@@ -3,15 +3,12 @@ package ru.skb.lab.intellij.plugins.action.project;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.actions.CreateFileFromTemplateDialog;
 import com.intellij.ide.actions.JavaCreateTemplateInPackageAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
-import com.intellij.ui.IconManager;
 import com.intellij.util.IncorrectOperationException;
-import icons.JavaUltimateIcons;
 import org.jetbrains.annotations.NotNull;
 import ru.skb.lab.intellij.plugins.util.Util;
 
