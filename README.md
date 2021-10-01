@@ -4,7 +4,8 @@ Generate java files from template
 
 ## Usage
 
-![Right click SKB lab tools Entity](images/right-click-skb-lab-tools-entity.png "Right click POJO Generator Entity")
+![Right click SKB lab tools](images/right-click-skb-lab-tools-entity.png "Right click SKB lab tools")
+![Select file template](images/right-click-skb-lab-tools-template.png "Select file template")
 
 1. Right click for generate files from template
 2. Choose the path where to store the java file
