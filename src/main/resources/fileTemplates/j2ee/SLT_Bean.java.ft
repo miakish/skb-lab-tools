@@ -4,13 +4,16 @@
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.BindToRegistry;
 
+#set($reg_name = ${NAME})
+#set($reg_name = $reg_name.substring(0,1).toLowerCase() + $reg_name.substring(1))
+
 /**
  * ${GIT_BRANCH} ${DATE}
  * @author ${USER}
  * ${COMMENT}
  */
 @Slf4j
-@BindToRegistry("${REG_NAME}")
+@BindToRegistry("$reg_name")
 public class ${NAME} {
 
 }

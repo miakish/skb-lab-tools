@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>ru.skb.lab.intellij.plugins.skb-lab-tools</id>
-    <name>SKB lab tools</name>
+    <name>SKB Lab Tools</name>
     <vendor email="SalnikovSN@skblab.ru" url="">SalnikovSN</vendor>
 
     <description><![CDATA[
@@ -11,14 +11,16 @@
         <li>Class</li>
         <li>Enum</li>
         <li>Interface</li>
+        <li>Bean</li>
+        <li>SMX Main</li>
+        <li>RouteBuilder</li>
     </ul>
     <br/>
     ]]></description>
 
     <change-notes><![CDATA[
     <ul>
-        <li>fix new errors</li>
-        <li>delete deprecated metods</li>
+        <li>fix bean template</li>
     </ul>
     ]]></change-notes>
 
@@ -33,7 +35,7 @@
     </extensions>
 
     <actions>
-        <group id="org.jetbrains.tutorials.actions.GroupedActions" text="SKB lab tools" popup="true" icon="/META-INF/actionIcon.svg">
+        <group id="org.jetbrains.tutorials.actions.GroupedActions" text="SKB Lab Tools" popup="true" icon="/META-INF/actionIcon.svg">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="WeighingNewGroup"/>
             <action id="myFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.MyFileTemplate" text="Create from template" description="Create from template" />
             <action id="createAll" class="ru.skb.lab.intellij.plugins.action.project.CreateAllAction" text="Create Main/RouteBuilder/Bean" description="create Main/RouteBuilder/Bean"/>

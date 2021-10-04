@@ -1,4 +1,4 @@
-<h1><img src="src/main/resources/META-INF/pluginIcon.svg" height="30">&nbsp;SKB lab tools</h1>
+<h1><img src="src/main/resources/META-INF/pluginIcon.svg" height="30">&nbsp;SKB Lab Tools</h1>
 
 Generate java files from template
 
