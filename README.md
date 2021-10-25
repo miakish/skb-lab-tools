@@ -1,10 +1,10 @@
-<h1><img src="src/main/resources/META-INF/pluginIcon.svg" height="30">&nbsp;SKB Lab Tools</h1>
+<h1><img src="src/main/resources/META-INF/pluginIcon.svg" height="30">&nbsp;SKB LAB Tools</h1>
 
 Generate java files from template
 
 ## Usage
 
-![Right click SKB lab tools](images/right-click-skb-lab-tools-entity.png "Right click SKB lab tools")
+![Right click SKB LAB tools](images/right-click-skb-lab-tools-entity.png "Right click SKB LAB tools")
 ![Select file template](images/right-click-skb-lab-tools-template.png "Select file template")
 
 1. Right click for generate files from template

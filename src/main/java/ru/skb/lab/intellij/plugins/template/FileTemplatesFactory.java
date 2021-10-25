@@ -17,7 +17,7 @@ public class FileTemplatesFactory implements FileTemplateGroupDescriptorFactory 
 
   public FileTemplateGroupDescriptor getFileTemplatesDescriptor() {
     Icon i = IconManager.getInstance().getIcon("/META-INF/actionIcon.svg", FileTemplatesFactory.class);
-    FileTemplateGroupDescriptor descriptor = new FileTemplateGroupDescriptor("SKB Lab Tools", i);
+    FileTemplateGroupDescriptor descriptor = new FileTemplateGroupDescriptor("SKB LAB Tools", i);
     descriptor.addTemplate(new FileTemplateDescriptor("SLT_Class.java", AllIcons.Nodes.Class));
     descriptor.addTemplate(new FileTemplateDescriptor("SLT_Enum.java", AllIcons.Nodes.Enum));
     descriptor.addTemplate(new FileTemplateDescriptor("SLT_Interface.java", AllIcons.Nodes.Interface));
