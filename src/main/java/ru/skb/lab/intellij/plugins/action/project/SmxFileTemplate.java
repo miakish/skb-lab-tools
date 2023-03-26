@@ -20,12 +20,12 @@ import java.util.Map;
  *
  * @author SSalnikov
  */
-public class MyFileTemplate extends JavaCreateTemplateInPackageAction<PsiClass> {
+public class SmxFileTemplate extends JavaCreateTemplateInPackageAction<PsiClass> {
 
     public static final String ACTION_TITLE = "New java file";
 
-    public MyFileTemplate() {
-        super("Create from template", "Creates a java file from the specified template", AllIcons.Nodes.TestGroup,true);
+    public SmxFileTemplate() {
+        super("Create from SMX template", "Creates a java file from the specified template", AllIcons.Nodes.TestGroup,true);
     }
 
     @Override
@@ -35,9 +35,9 @@ public class MyFileTemplate extends JavaCreateTemplateInPackageAction<PsiClass> 
             .addKind("Class", AllIcons.Nodes.Class, "SLT_Class.java")
             .addKind("Enum", AllIcons.Nodes.Enum, "SLT_Enum.java")
             .addKind("Interface", AllIcons.Nodes.Interface, "SLT_Interface.java")
-            .addKind("Bean", AllIcons.Nodes.Interface, "SLT_Bean.java")
+            .addKind("Bean", AllIcons.Nodes.Class, "SLT_Bean.java")
             .addKind("SMX Main", AllIcons.Actions.Run_anything, "SLT_Main.java")
-            .addKind("RouteBuilder", AllIcons.Nodes.Interface, "SLT_RouteBuilder.java")
+            .addKind("RouteBuilder", AllIcons.Nodes.Class, "SLT_RouteBuilder.java")
         ;
     }
 

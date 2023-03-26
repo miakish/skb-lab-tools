@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CreateAllAction extends AnAction {
+public class CreateSmxBaseBeansAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {

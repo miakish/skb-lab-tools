@@ -37,8 +37,8 @@
     <actions>
         <group id="org.jetbrains.tutorials.actions.GroupedActions" text="SKB LAB Tools" popup="true" icon="/META-INF/actionIcon.svg">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="WeighingNewGroup"/>
-            <action id="myFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.MyFileTemplate" text="Create from template" description="Create from template" />
-            <action id="createAll" class="ru.skb.lab.intellij.plugins.action.project.CreateAllAction" text="Create Main/RouteBuilder/Bean" description="create Main/RouteBuilder/Bean"/>
+            <action id="smxFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.SmxFileTemplate" text="Create from SMX template" description="Create from SMX template" />
+            <action id="createSmxBaseBeans" class="ru.skb.lab.intellij.plugins.action.project.CreateSmxBaseBeansAction" text="Create Main/RouteBuilder/Bean" description="create Main/RouteBuilder/Bean"/>
         </group>
     </actions>
 </idea-plugin>
