@@ -1,0 +1,43 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+#parse("File Header.java")
+
+import ru.skblab.soc.entity.${NAME};
+import com.haulmont.cuba.core.global.CommitContext;
+import com.haulmont.cuba.core.global.DataManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+/**
+ * ${GIT_BRANCH} ${DATE}
+ * @author ${USER}
+ * ${COMMENT}
+ */
+@Repository(BlackListHandbookRecordRepository.NAME)
+public class ${NAME}RepositoryImpl implements ${NAME}Repository {
+    private final DataManager dataManager;
+
+    @Autowired
+    public ${NAME}RepositoryImpl(DataManager dataManager) {
+        this.dataManager = dataManager;
+    }
+
+    @Override
+    public ${NAME} save(${NAME} record) {
+        return dataManager.commit(record);
+    }
+
+    @Override
+    public void save(List<${NAME}> recordList) {
+        dataManager.commit(new CommitContext(recordList));
+    }
+
+    @Override
+    public void deleteAllRecords() {
+        List<${NAME}> allRecords = dataManager.load(${NAME}.class).list();
+        CommitContext context = new CommitContext();
+        allRecords.forEach(context::addInstanceToRemove);
+        dataManager.commit(context);
+    }
+}

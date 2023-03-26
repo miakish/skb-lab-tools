@@ -8,10 +8,13 @@ import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
+import com.intellij.ui.IconManager;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
+import ru.skb.lab.intellij.plugins.template.FileTemplatesFactory;
 import ru.skb.lab.intellij.plugins.util.Util;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,8 +27,10 @@ public class SmxFileTemplate extends JavaCreateTemplateInPackageAction<PsiClass>
 
     public static final String ACTION_TITLE = "New java file";
 
+    public static final Icon ICON = IconManager.getInstance().getIcon("/META-INF/smx.svg", FileTemplatesFactory.class);
+
     public SmxFileTemplate() {
-        super("Create from SMX template", "Creates a java file from the specified template", AllIcons.Nodes.TestGroup,true);
+        super("Create from SMX template", "Creates a java file from the specified template", ICON,true);
     }
 
     @Override

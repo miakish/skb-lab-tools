@@ -1,17 +1,24 @@
 #if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
 #parse("File Header.java")
 
+import com.haulmont.cuba.core.global.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.skblab.soc.entity.*;
+import ru.skblab.soc.core.utils.json.RequestToObjectsUtils;
+import ru.skblab.soc.entity.FactorType;
+import ru.skblab.soc.entity.OrgVerification;
+import ru.skblab.soc.entity.RiskCriteriaPoint;
+import ru.skblab.soc.entity.ScoreResult;
 import ru.skblab.soc.factors.ParamsCalculatingFactor;
 import ru.skblab.soc.factors.scorecalculators.CriteriaCodeNotFoundException;
 import ru.skblab.soc.factors.scorecalculators.FactorScoreCalculator;
 import ru.skblab.soc.factors.scorecalculators.NoRequiredDataException;
 import ru.skblab.soc.service.requester.RequesterService;
 import ru.skblab.soc.verification.ScoreCalculator;
+
+import java.util.List;
 
 /**
  * ${GIT_BRANCH} ${DATE}
@@ -39,6 +46,8 @@ public class ${NAME}Calculator extends FactorScoreCalculator implements ScoreCal
         log.info("Начат расчет рискфактора ${FACTOR_TYPE}");
         OrgVerification orgVerification = paramsCalculatingFactor.getOrgVerification();
         List<RiskCriteriaPoint> points = paramsCalculatingFactor.getPoints();
+
+        String comment = null;
         String criteriaCode = "";
 
         return calcScoreResult(metadata, getType(), orgVerification, points, criteriaCode, comment);

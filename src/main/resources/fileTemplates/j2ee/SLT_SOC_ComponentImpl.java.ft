@@ -1,0 +1,17 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+#parse("File Header.java")
+
+import org.springframework.stereotype.Component;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * ${GIT_BRANCH} ${DATE}
+ * @author ${USER}
+ * ${COMMENT}
+ */
+@Component(${NAME}.NAME)
+public class ${NAME}Impl implements ${NAME} {
+    private static final Logger log = LoggerFactory.getLogger(${NAME}Impl.class);
+}

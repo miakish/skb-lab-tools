@@ -14,6 +14,14 @@
         <li>Bean</li>
         <li>SMX Main</li>
         <li>RouteBuilder</li>
+        <li>Calculator</li>
+        <li>CalculatorTest</li>
+        <li>Component</li>
+        <li>ComponentImpl</li>
+        <li>Repository</li>
+        <li>RepositoryImpl</li>
+        <li>Service</li>
+        <li>ServiceBean</li>
     </ul>
     <br/>
     ]]></description>
@@ -21,6 +29,7 @@
     <change-notes><![CDATA[
     <ul>
         <li>icon update</li>
+        <li>new templates</li>
     </ul>
     ]]></change-notes>
 
@@ -39,6 +48,7 @@
             <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="WeighingNewGroup"/>
             <action id="smxFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.SmxFileTemplate" text="Create from SMX template" description="Create from SMX template" />
             <action id="createSmxBaseBeans" class="ru.skb.lab.intellij.plugins.action.project.CreateSmxBaseBeansAction" text="Create Main/RouteBuilder/Bean" description="create Main/RouteBuilder/Bean"/>
+            <action id="socFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.SocFileTemplate" text="Create from SOC template" description="Create from SMX template" />
         </group>
     </actions>
 </idea-plugin>

@@ -1,0 +1,56 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+#parse("File Header.java")
+
+import com.haulmont.bali.util.ParamsMap;
+import com.haulmont.cuba.core.global.Metadata;
+import org.junit.Before;
+import org.junit.Test;
+import ru.skblab.soc.core.utils.json.RequestToObjectsUtils;
+import ru.skblab.soc.entity.RiskCriteriaPoint;
+import ru.skblab.soc.entity.RiskVerification;
+import ru.skblab.soc.entity.ScoreResult;
+import ru.skblab.soc.order.orderobjects.baseunionobject.PartiesDeal;
+import ru.skblab.soc.service.requester.RequesterService;
+import ru.skblab.soc.util.ResourceHelper;
+import ru.skblab.soc.verification.VerificationResult;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static ru.skblab.soc.VerificationTestUtils.*;
+
+/**
+ * ${GIT_BRANCH} ${DATE}
+ * @author ${USER}
+ * ${COMMENT}
+ */
+public class ${NAME}CalculatorTest {
+
+    private final ResourceHelper resourceHelper = new ResourceHelper();
+    private final Metadata metadata = mock(Metadata.class);
+    private final RequesterService requesterService = mock(RequesterService.class);
+    private final RequestToObjectsUtils requestToObjectsUtils = new RequestToObjectsUtils();
+    private final ${NAME}Calculator checker = new ${NAME}Calculator(metadata, requesterService, requestToObjectsUtils);
+    private VerificationResult result = new VerificationResult();
+    private RiskVerification riskVerification = new RiskVerification();
+    private List<RiskCriteriaPoint> points = new LinkedList<>();
+    private final PartiesDeal partiesDeal = new PartiesDeal();
+
+    @Before
+    public void setUp() throws Exception {
+        // Создание result
+        result = createVerificationResult();
+
+        // Создание рискфатора с критериями
+        riskVerification = createRiskVerificationWithCriteriaPoints(ParamsMap.of("",""));
+
+        // Наполнение критериев именами
+        setRiskCriteriaNames(riskVerification, ParamsMap.of("",""));
+
+
+        when(metadata.create(ScoreResult.class)).thenReturn(new ScoreResult());
+        points = riskVerification.getCriteria();
+    }
+}
