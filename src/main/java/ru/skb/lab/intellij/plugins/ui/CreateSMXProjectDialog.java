@@ -114,6 +114,10 @@ public class CreateSMXProjectDialog extends DialogWrapper {
         additionalProperties.put("PROJECT_TYPE", ((ProjectType)projectTypeField.getSelectedItem()).getValue());
         additionalProperties.put("APP_TYPE", ((AppType)appTypeField.getSelectedItem()).getValue());
 
+        String camelContextName = ((AppType)appTypeField.getSelectedItem()).getValue().toUpperCase() + "." +
+                myArtifactIdField.getText().replace("-",".").replace("_",".").toUpperCase();
+        additionalProperties.put("CAMELCONTEXT_NAME", camelContextName);
+
         additionalProperties.put("ACTIVEMQ_ENABLED", String.valueOf(createActiveMQComponentCheckBox.isSelected()));
         additionalProperties.put("SSLCONTEXT_ENABLED", String.valueOf(createSSLContextParametersCheckBox.isSelected()));
         additionalProperties.put("JDBCTEMPLATE_ENABLED", String.valueOf(createJdbcTemplateCheckBox.isSelected()));

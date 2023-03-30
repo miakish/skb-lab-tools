@@ -2,6 +2,7 @@ package ru.skb.lab.intellij.plugins.ui;
 
 import com.intellij.openapi.util.NlsContexts;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 /**
@@ -31,6 +32,10 @@ public enum ProjectType {
 
     public String getValue() {
         return value;
+    }
+
+    public static ProjectType fromValue(String value) {
+        return Arrays.stream(values()).filter(v->v.value.equals(value)).findAny().get();
     }
 
     public @NlsContexts.Label String getPresentableName() {

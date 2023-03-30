@@ -1,0 +1,28 @@
+k8s.service.name=${ARTIFACT_ID}
+camelcontext.name=${CAMELCONTEXT_NAME}
+port=5555
+
+service.enable=true
+
+#if((${TEST} && ${TEST}=='true'))
+logging.level.com.itprofix=DEBUG
+logging.level.ADP=DEBUG
+logging.level.SRV=DEBUG
+#end
+
+#if((${ACTIVEMQ_ENABLED} && ${ACTIVEMQ_ENABLED}=='true'))
+amq.maxConnections=5
+amq.concurrentConsumers=5
+#end
+
+#if(${KAFKACOMPONENT_ENABLED} && ${KAFKACOMPONENT_ENABLED}=='true')
+kafka.hosts={{KAFKA_URL}}
+kafka.username=
+kafka.password=
+kafka.security.protocol=SASL_SSL
+kafka.sasl.mechanism={{KAFKA_SASL_MECHANISM}}
+kafka.sasl.jaas.config={{KAFKA_SASL_JAAS_CONFIG}}
+kafka.trustStorePath={{trustStorePath}}
+kafka.trustStorePassword={{trustStorePassword}}
+kafka.group.id=in.${APP_TYPE}.${ARTIFACT_ID}
+#end

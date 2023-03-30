@@ -2,6 +2,7 @@ package ru.skb.lab.intellij.plugins.ui;
 
 import com.intellij.openapi.util.NlsContexts;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 /**
@@ -40,4 +41,9 @@ public enum AppType {
     public String getDescr() {
         return descr;
     }
+
+    public static AppType fromValue(String value) {
+        return Arrays.stream(values()).filter(v->v.value.equals(value)).findAny().get();
+    }
+
 }

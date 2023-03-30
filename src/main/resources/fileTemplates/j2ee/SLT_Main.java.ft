@@ -20,6 +20,10 @@ import com.itprofix.lib.cryptopro.metrics.CryptoEventListener;
 public class ${NAME}Main extends SMXCoreMain {
 
     public static void main(String... args) throws Exception {
+        log.info("START MAIN");
+        #if(${JAVA_VERSION} && ${JAVA_VERSION}=='CryptoPro')
+        GOST.initSysProperties();
+        #end
         instance = new Main();
         startInstance(args);
     }
@@ -29,14 +33,17 @@ public class ${NAME}Main extends SMXCoreMain {
      */
     @Override
     public void doPreInit() {
+        #if(${CRYPTOPRO_METRICS_ENABLED} && ${CRYPTOPRO_METRICS_ENABLED}=='true')
+            addConfigClass(CryptoCertificateHelper.class);
+        #end
+        #if(${JAVA_VERSION} && ${JAVA_VERSION}=='CryptoPro')
+        addConfigClass(GOST.class);
+        #end
         #if (${BEAN} && ${BEAN} != "")
         addConfigClass(${BEAN}.class);
         #end
         #if (${ROUTE_BUILDER} && ${ROUTE_BUILDER} != "")
         addRouteBuilder(${ROUTE_BUILDER}.class);
-        #end
-        #if(${CRYPTOPRO_METRICS_ENABLED} && ${CRYPTOPRO_METRICS_ENABLED}=='true')
-        addConfigClass(CryptoCertificateHelper.class);
         #end
 
     }
@@ -58,9 +65,6 @@ public class ${NAME}Main extends SMXCoreMain {
         #if(${SQLCOMPONENT_ENABLED} && ${SQLCOMPONENT_ENABLED}=='true')
         setCreateSqlComponent(true);
         #end
-        #if(${CRYPTOPRO_METRICS_ENABLED} && ${CRYPTOPRO_METRICS_ENABLED}=='true')
-        setEventListener(CryptoEventListener.class);
-        #end
         #if(${DATASOURCE_ENABLED} && ${DATASOURCE_ENABLED}=='true')
         setCreateDataSource(true);
         #end
@@ -69,6 +73,12 @@ public class ${NAME}Main extends SMXCoreMain {
         #end
         #if(${HTTPCLIENTCONFIGURER_ENABLED} && ${HTTPCLIENTCONFIGURER_ENABLED}=='true')
         setCreateHttpClientConfigurer(false);
+        #end
+        #if(${JAVA_VERSION} && ${JAVA_VERSION}=='CryptoPro')
+        addMainListener(new CamelListener());
+        #end
+        #if(${CRYPTOPRO_METRICS_ENABLED} && ${CRYPTOPRO_METRICS_ENABLED}=='true')
+            setEventListener(CryptoEventListener.class);
         #end
 
     }

@@ -10,7 +10,10 @@
     <artifactId>${ARTIFACT_ID}</artifactId>
     <version>${VERTION}</version>
 
-    <name>SMX :: K8S :: </name>
+    #set($reg_name = ${ARTIFACT_ID})
+    #set($reg_name = $reg_name.toUpperCase())
+
+    <name>SMX :: K8S :: $reg_name </name>
 
     <properties>
         <!--		DEFAULT:-->
@@ -148,6 +151,7 @@
             <version>1.0.0</version>
         </dependency>
     #end
+
         <!-- testing -->
         <dependency>
             <groupId>junit</groupId>
