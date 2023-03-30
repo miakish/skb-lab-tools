@@ -1,7 +1,16 @@
+#if (${PROJECT_PACKAGE} && ${PROJECT_PACKAGE} != "")
+package ${PROJECT_PACKAGE};
+#else
 #if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
 #parse("File Header.java")
+#end
+
 
 import com.itprofix.soa.cr.SMXCoreMain;
+#if(${CRYPTOPRO_METRICS_ENABLED} && ${CRYPTOPRO_METRICS_ENABLED}=='true')
+import com.itprofix.lib.cryptopro.metrics.CryptoCertificateHelper;
+import com.itprofix.lib.cryptopro.metrics.CryptoEventListener;
+#end
 
 /**
  * ${GIT_BRANCH} ${DATE}
@@ -20,8 +29,16 @@ public class ${NAME}Main extends SMXCoreMain {
      */
     @Override
     public void doPreInit() {
-        #if (${BEAN} && ${BEAN} != "")addConfigClass(${BEAN}.class);#end
-        #if (${ROUTE_BUILDER} && ${ROUTE_BUILDER} != "")addRouteBuilder(${ROUTE_BUILDER}.class);#end
+        #if (${BEAN} && ${BEAN} != "")
+        addConfigClass(${BEAN}.class);
+        #end
+        #if (${ROUTE_BUILDER} && ${ROUTE_BUILDER} != "")
+        addRouteBuilder(${ROUTE_BUILDER}.class);
+        #end
+        #if(${CRYPTOPRO_METRICS_ENABLED} && ${CRYPTOPRO_METRICS_ENABLED}=='true')
+        addConfigClass(CryptoCertificateHelper.class);
+        #end
+
     }
 
     /**
@@ -29,7 +46,30 @@ public class ${NAME}Main extends SMXCoreMain {
      */
     public Main() {
         super();
+        #if((${ACTIVEMQ_ENABLED} && ${ACTIVEMQ_ENABLED}=='true') || (${BEAN} && ${BEAN} != ""))
         setCreateActiveMQComponent(true);
+        #end
+        #if((${SSLCONTEXT_ENABLED} && ${SSLCONTEXT_ENABLED}=='true') || (${BEAN} && ${BEAN} != ""))
         setCreateSSLContextParameters(true);
+        #end
+        #if(${JDBCTEMPLATE_ENABLED} && ${JDBCTEMPLATE_ENABLED}=='true')
+        setCreateJdbcTemplate(true);
+        #end
+        #if(${SQLCOMPONENT_ENABLED} && ${SQLCOMPONENT_ENABLED}=='true')
+        setCreateSqlComponent(true);
+        #end
+        #if(${CRYPTOPRO_METRICS_ENABLED} && ${CRYPTOPRO_METRICS_ENABLED}=='true')
+        setEventListener(CryptoEventListener.class);
+        #end
+        #if(${DATASOURCE_ENABLED} && ${DATASOURCE_ENABLED}=='true')
+        setCreateDataSource(true);
+        #end
+        #if(${KAFKACOMPONENT_ENABLED} && ${KAFKACOMPONENT_ENABLED}=='true')
+        setCreateKafkaComponent(true);
+        #end
+        #if(${HTTPCLIENTCONFIGURER_ENABLED} && ${HTTPCLIENTCONFIGURER_ENABLED}=='true')
+        setCreateHttpClientConfigurer(false);
+        #end
+
     }
 }

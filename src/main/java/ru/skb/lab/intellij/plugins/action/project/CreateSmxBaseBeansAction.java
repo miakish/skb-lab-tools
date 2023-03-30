@@ -3,6 +3,7 @@ package ru.skb.lab.intellij.plugins.action.project;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.IdeView;
 import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaDirectoryService;
@@ -46,9 +47,20 @@ public class CreateSmxBaseBeansAction extends AnAction {
         }
     }
 
+    public boolean isAvailable(DataContext dataContext) {
+        Editor editor = CommonDataKeys.EDITOR.getData(dataContext);
+        if (editor != null && editor.getSelectionModel().hasSelection()) {
+            return false;
+        }
+        final Project project = CommonDataKeys.PROJECT.getData(dataContext);
+        final IdeView view = LangDataKeys.IDE_VIEW.getData(dataContext);
+        return project != null && view != null && view.getDirectories().length != 0;
+    }
+
     @Override
     public void update(@NotNull AnActionEvent anActionEvent) {
         anActionEvent.getPresentation().setIcon(AllIcons.Actions.ListFiles);
+        anActionEvent.getPresentation().setVisible(isAvailable(anActionEvent.getDataContext()));
         super.update(anActionEvent);
     }
 }

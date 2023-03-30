@@ -6,14 +6,21 @@
     <description><![CDATA[
     <h1>Сreating Java classes using templates inside the plugin</h1>
     <br/>
-    Can generate Java files (automatic filling of the GIT_BRANCH variable):<br/>
+    Can generate Java files (automatic filling of the GIT_BRANCH variable).<br/>
+    Base templates:<br/>
     <ul>
         <li>Class</li>
         <li>Enum</li>
         <li>Interface</li>
+    </ul><br/>
+    SMX templates:<br/>
+    <ul>
         <li>Bean</li>
         <li>SMX Main</li>
         <li>RouteBuilder</li>
+    </ul><br/>
+    SOC templates:<br/>
+    <ul>
         <li>Calculator</li>
         <li>CalculatorTest</li>
         <li>Component</li>
@@ -48,6 +55,8 @@
             <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="WeighingNewGroup"/>
             <action id="smxFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.SmxFileTemplate" text="Create from SMX template" description="Create from SMX template" />
             <action id="createSmxBaseBeans" class="ru.skb.lab.intellij.plugins.action.project.CreateSmxBaseBeansAction" text="Create Main/RouteBuilder/Bean" description="create Main/RouteBuilder/Bean"/>
+            <action id="projectTemplate" class="ru.skb.lab.intellij.plugins.action.project.CreateSMXProjectAction" text="Create SMX service" description="Create SMX project" />
+            <separator/>
             <action id="socFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.SocFileTemplate" text="Create from SOC template" description="Create from SMX template" />
         </group>
     </actions>

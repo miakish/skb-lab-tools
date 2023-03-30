@@ -49,7 +49,7 @@ public class SocFileTemplate extends JavaCreateTemplateInPackageAction<PsiClass>
                 .addKind("Class", AllIcons.Nodes.Class, "SLT_Class.java")
                 .addKind("Enum", AllIcons.Nodes.Enum, "SLT_Enum.java")
                 .addKind("Interface", AllIcons.Nodes.Interface, "SLT_Interface.java")
-                .addKind("Risk Factor Calculator", AllIcons.Actions.GroupByClass, "SLT_SOC_Calculator.java")
+                .addKind("Risk Factor Calculator", AllIcons.Debugger.EvaluateExpression, "SLT_SOC_Calculator.java")
                 .addKind("Component", AllIcons.Xml.Css_class, "SLT_SOC_Component.java")
                 //.addKind("Risk Factor Calculator", AllIcons.Nodes.Class, "SLT_SOC_ComponentImpl.java")
                 .addKind("Repository", AllIcons.Nodes.Record, "SLT_SOC_Repository.java")
