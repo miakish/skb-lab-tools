@@ -6,12 +6,16 @@ import com.intellij.ide.fileTemplates.FileTemplate;
 import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.ide.fileTemplates.FileTemplateUtil;
 import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -144,10 +148,19 @@ public class CreateSMXProjectAction extends AnAction {
                     additionalProperties.remove("NAME");
                     additionalProperties.put("NAME", "");
                     psiClassList.add(createFromTemplate("SLT_Main.java", "Main.java", additionalProperties, project, packageDir));
-//                    for (PsiFile pc : psiClassList) {
-//                        FileEditorManager manager = FileEditorManager.getInstance(project);
-//                        manager.openFile(pc.getContainingFile().getVirtualFile(), true, true);
-//                    }
+                    //setPackage(packageDir);
+                    for (PsiFile pc : psiClassList) {
+                        if(pc.getName().contains(".java")) {
+                            ApplicationManager.getApplication().runWriteAction(() -> {
+                            OpenFileDescriptor descriptor = new OpenFileDescriptor(project, pc.getVirtualFile());
+                            FileEditorManager manager = FileEditorManager.getInstance(project);
+                            Editor editor = manager.openTextEditor(descriptor, true);
+                            String doc = editor.getDocument().getText();
+                            editor.getDocument().setText(doc.replace("${PACKAGE}", "package "));
+                            //manager.openFile(pc.getContainingFile().getVirtualFile(), true, true);
+                            });
+                        }
+                    }
                 } else {
                     Messages.showMessageDialog("prjDir=null", "prjDir", Messages.getErrorIcon());
                 }
@@ -160,6 +173,22 @@ public class CreateSMXProjectAction extends AnAction {
     private PsiFile createFromTemplate(String templateName, String fileName, Map<String, Object> additionalProperties, Project project, PsiDirectory psiDirectory) throws Exception {
         final FileTemplate template = FileTemplateManager.getInstance(project).getInternalTemplate(templateName);
         return FileTemplateUtil.createFromTemplate(template, fileName, additionalProperties, psiDirectory, null).getContainingFile();
+    }
+
+    public void setPackage(PsiDirectory packageDir) {
+        for (PsiFile psiFile:packageDir.getFiles()) {
+            VirtualFile file = psiFile.getVirtualFile();
+            ApplicationManager.getApplication().runWriteAction(() -> {
+                try {
+                    String text;
+                    text = VfsUtil.loadText(file);
+                    VfsUtil.saveText(file, text.replace("${PACKAGE}", "package "));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+        }
     }
 
     public PsiDirectory getSubdirByPath(PsiDirectory baseDir, String path) {
