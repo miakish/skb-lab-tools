@@ -5,7 +5,6 @@
     #parse("File Header.java")
 #end
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.main.BaseMainSupport;
 import org.apache.camel.main.MainListenerSupport;
@@ -19,8 +18,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 /**
- * EKZ-2596 SalnikovSN
- * в контейнере необходимо копировать КриптоПРО хранилище с ключами в отдельную директорию
+ * ${GIT_BRANCH} ${DATE}
+ * @author ${USER}
+ * В контейнере необходимо копировать КриптоПРО хранилище с ключами в отдельную директорию
  */
 @Slf4j
 public class CamelListener extends MainListenerSupport {

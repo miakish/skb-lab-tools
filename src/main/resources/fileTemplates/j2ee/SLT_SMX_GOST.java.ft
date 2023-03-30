@@ -5,7 +5,6 @@
     #parse("File Header.java")
 #end
 
-
 import org.apache.camel.BindToRegistry;
 import org.apache.camel.CamelContext;
 import org.apache.camel.PropertyInject;
@@ -26,6 +25,11 @@ import java.security.KeyStore;
 import java.security.Security;
 import java.util.logging.LogManager;
 
+/**
+ * ${GIT_BRANCH} ${DATE}
+ * @author ${USER}
+ * Настрока ГОСТ SSL
+*/
 public class GOST {
     private static Logger log = LoggerFactory.getLogger(GOST.class);
     private static final String UNDEFINED_VALUE = "<undefined>";

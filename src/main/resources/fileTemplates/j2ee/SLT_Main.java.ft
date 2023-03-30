@@ -5,7 +5,6 @@
 #parse("File Header.java")
 #end
 
-
 import com.itprofix.soa.cr.SMXCoreMain;
 #if(${CRYPTOPRO_METRICS_ENABLED} && ${CRYPTOPRO_METRICS_ENABLED}=='true')
 import com.itprofix.lib.cryptopro.metrics.CryptoCertificateHelper;

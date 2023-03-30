@@ -65,34 +65,12 @@ public class CreateSMXProjectAction extends AnAction {
                 Map<String, Object> additionalProperties = dialog.getProperties();
                 List<PsiFile> psiClassList = new ArrayList<>();
 
-                String root = "%s/%s/%s";
-                String path = psiDirectory.getVirtualFile().getPath();
                 String projectName = additionalProperties.get("ARTIFACT_ID").toString();
                 String projectPackage = additionalProperties.get("PROJECT_PACKAGE").toString().replace(".","/");
                 ProjectType projectType = ProjectType.fromValue(additionalProperties.get("PROJECT_TYPE").toString());
                 JavaType javaType = JavaType.fromValue(additionalProperties.get("JAVA_VERSION").toString());
 
-                try {
-                    VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/java/"+projectPackage));
-                    VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources"));
-                    VfsUtil.createDirectories(String.format(root, path, projectName, "src/test/java"));
-                    if (javaType.equals(JavaType.JAVA_CRYPTO_PRO)) {
-                        VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/cert"));
-                    }
-                    if(projectType.equals(ProjectType.SMX_K8S)) {
-                        VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/etc"));
-                        VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/dev"));
-                        VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/test"));
-                        VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/reg"));
-                        VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/stage"));
-                    } else if(projectType.equals(ProjectType.SMX_INVEST)) {
-                        VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/etc"));
-                        VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/test"));
-                    }
-                }
-                catch (IOException e) {
-                    Messages.showMessageDialog(e.getMessage(), "createDirectoriess", Messages.getErrorIcon());
-                }
+                createProjectDirs(psiDirectory, additionalProperties);
 
                 PsiDirectory prjDir = psiDirectory.findSubdirectory(projectName);
                 //Messages.showMessageDialog(prjDir.getVirtualFile().getPath(), "prjDir", Messages.getInformationIcon());
@@ -106,61 +84,17 @@ public class CreateSMXProjectAction extends AnAction {
                     String myResourcesPath = projectName+"/src/main/resources";
                     PsiDirectory resourcesDir = getSubdirByPath(psiDirectory, myResourcesPath);
                     if (javaType.equals(JavaType.JAVA_CRYPTO_PRO)) {
-                        psiClassList.add(createFromTemplate("SLT_SMX_jul.properties", "jul.properties", additionalProperties, project, resourcesDir));
-                        psiClassList.add(createFromTemplate("SLT_SMX_CamelListener.java", "CamelListener.java", additionalProperties, project, packageDir));
-                        psiClassList.add(createFromTemplate("SLT_SMX_GOST.java", "GOST.java", additionalProperties, project, packageDir));
+                        psiClassList.addAll(createCryptoProFiles(resourcesDir, packageDir, additionalProperties, project));
                     }
                     if(projectType.equals(ProjectType.SMX_K8S)) {
-                        additionalProperties.put("TEST", "true");
-                        psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("etc")));
-                        psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("dev")));
-                        psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("test")));
-                        additionalProperties.remove("TEST");
-                        psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("reg")));
-                        psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("stage")));
-
-                        psiClassList.add(createFromTemplate("SLT_SMX_config.yml", "config.yml", additionalProperties, project, resourcesDir.findSubdirectory("dev")));
-                        psiClassList.add(createFromTemplate("SLT_SMX_config.yml", "config.yml", additionalProperties, project, resourcesDir.findSubdirectory("test")));
-                        psiClassList.add(createFromTemplate("SLT_SMX_config.yml", "config.yml", additionalProperties, project, resourcesDir.findSubdirectory("reg")));
-                        psiClassList.add(createFromTemplate("SLT_SMX_config.yml", "config.yml", additionalProperties, project, resourcesDir.findSubdirectory("stage")));
+                        createSmxK8sConfigFiles(resourcesDir, additionalProperties, project);
                     } else if(projectType.equals(ProjectType.SMX_INVEST)) {
-                        additionalProperties.put("TEST", "true");
-                        psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("etc")));
-                        psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("test")));
-                        psiClassList.add(createFromTemplate("SLT_SMX_config.yml", "config.yml", additionalProperties, project, resourcesDir.findSubdirectory("test")));
-                        additionalProperties.remove("TEST");
+                        createSmxInvestConfigFiles(resourcesDir, additionalProperties, project);
                     }
 
-                    //SmartPsiElementPointer<PsiFile> pointer = SmartPointerManager.getInstance(project).createSmartPsiElementPointer(psiFile);
-                    additionalProperties.put("GIT_BRANCH", Util.getGitBranch(project));
-                    additionalProperties.put("COMMENT", "");
-                    additionalProperties.put("NAME", "Custom");
-                    psiClassList.add(createFromTemplate("SLT_RouteBuilder.java", "CustomRouteBuilder.java", additionalProperties, project, packageDir));
+                    psiClassList.addAll(createBaseClassFiles(packageDir, additionalProperties, project));
 
-                    additionalProperties.put("REG_NAME", "operation");
-                    additionalProperties.remove("NAME");
-                    additionalProperties.put("NAME", "Operation");
-                    psiClassList.add(createFromTemplate("SLT_Bean.java", "Operation.java", additionalProperties, project, packageDir));
-
-                    additionalProperties.put("ROUTE_BUILDER", "CustomRouteBuilder");
-                    additionalProperties.remove("REG_NAME");
-                    additionalProperties.put("BEAN", "Operation");
-                    additionalProperties.remove("NAME");
-                    additionalProperties.put("NAME", "");
-                    psiClassList.add(createFromTemplate("SLT_Main.java", "Main.java", additionalProperties, project, packageDir));
-                    //setPackage(packageDir);
-                    for (PsiFile pc : psiClassList) {
-                        if(pc.getName().contains(".java")) {
-                            ApplicationManager.getApplication().runWriteAction(() -> {
-                            OpenFileDescriptor descriptor = new OpenFileDescriptor(project, pc.getVirtualFile());
-                            FileEditorManager manager = FileEditorManager.getInstance(project);
-                            Editor editor = manager.openTextEditor(descriptor, true);
-                            String doc = editor.getDocument().getText();
-                            editor.getDocument().setText(doc.replace("${PACKAGE}", "package "));
-                            //manager.openFile(pc.getContainingFile().getVirtualFile(), true, true);
-                            });
-                        }
-                    }
+                    setPackage(psiClassList, project);
                 } else {
                     Messages.showMessageDialog("prjDir=null", "prjDir", Messages.getErrorIcon());
                 }
@@ -170,24 +104,110 @@ public class CreateSMXProjectAction extends AnAction {
         }
     }
 
+    private void createProjectDirs(PsiDirectory psiDirectory, Map<String, Object> additionalProperties) {
+        String root = "%s/%s/%s";
+        String path = psiDirectory.getVirtualFile().getPath();
+        String projectName = additionalProperties.get("ARTIFACT_ID").toString();
+        String projectPackage = additionalProperties.get("PROJECT_PACKAGE").toString().replace(".","/");
+        ProjectType projectType = ProjectType.fromValue(additionalProperties.get("PROJECT_TYPE").toString());
+        JavaType javaType = JavaType.fromValue(additionalProperties.get("JAVA_VERSION").toString());
+
+        try {
+            VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/java/"+projectPackage));
+            VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources"));
+            VfsUtil.createDirectories(String.format(root, path, projectName, "src/test/java"));
+            if (javaType.equals(JavaType.JAVA_CRYPTO_PRO)) {
+                VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/cert"));
+            }
+            if(projectType.equals(ProjectType.SMX_K8S)) {
+                VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/etc"));
+                VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/dev"));
+                VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/test"));
+                VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/reg"));
+                VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/stage"));
+            } else if(projectType.equals(ProjectType.SMX_INVEST)) {
+                VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/etc"));
+                VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/test"));
+            }
+        }
+        catch (IOException e) {
+            Messages.showMessageDialog(e.getMessage(), "createDirectoriess", Messages.getErrorIcon());
+        }
+    }
+
+    private List<PsiFile> createCryptoProFiles(PsiDirectory resourcesDir, PsiDirectory packageDir, Map<String, Object> additionalProperties, Project project) throws Exception {
+        List<PsiFile> psiClassList = new ArrayList<>();
+        psiClassList.add(createFromTemplate("SLT_SMX_jul.properties", "jul.properties", additionalProperties, project, resourcesDir));
+        psiClassList.add(createFromTemplate("SLT_SMX_CamelListener.java", "CamelListener.java", additionalProperties, project, packageDir));
+        psiClassList.add(createFromTemplate("SLT_SMX_GOST.java", "GOST.java", additionalProperties, project, packageDir));
+        return psiClassList;
+    }
+
+    private List<PsiFile> createSmxK8sConfigFiles(PsiDirectory resourcesDir, Map<String, Object> additionalProperties, Project project) throws Exception {
+        List<PsiFile> psiClassList = new ArrayList<>();
+        additionalProperties.put("TEST", "true");
+        psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("etc")));
+        psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("dev")));
+        psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("test")));
+        additionalProperties.remove("TEST");
+        psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("reg")));
+        psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("stage")));
+
+        psiClassList.add(createFromTemplate("SLT_SMX_config.yml", "config.yml", additionalProperties, project, resourcesDir.findSubdirectory("dev")));
+        psiClassList.add(createFromTemplate("SLT_SMX_config.yml", "config.yml", additionalProperties, project, resourcesDir.findSubdirectory("test")));
+        psiClassList.add(createFromTemplate("SLT_SMX_config.yml", "config.yml", additionalProperties, project, resourcesDir.findSubdirectory("reg")));
+        psiClassList.add(createFromTemplate("SLT_SMX_config.yml", "config.yml", additionalProperties, project, resourcesDir.findSubdirectory("stage")));
+        return psiClassList;
+    }
+
+    private List<PsiFile> createSmxInvestConfigFiles(PsiDirectory resourcesDir, Map<String, Object> additionalProperties, Project project) throws Exception {
+        List<PsiFile> psiClassList = new ArrayList<>();
+        additionalProperties.put("TEST", "true");
+        psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("etc")));
+        psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("test")));
+        psiClassList.add(createFromTemplate("SLT_SMX_config.yml", "config.yml", additionalProperties, project, resourcesDir.findSubdirectory("test")));
+        additionalProperties.remove("TEST");
+        return psiClassList;
+    }
+
+    private List<PsiFile> createBaseClassFiles(PsiDirectory packageDir, Map<String, Object> additionalProperties, Project project) throws Exception {
+        List<PsiFile> psiClassList = new ArrayList<>();
+        additionalProperties.put("GIT_BRANCH", Util.getGitBranch(project));
+        additionalProperties.put("COMMENT", "");
+        additionalProperties.put("NAME", "Custom");
+        psiClassList.add(createFromTemplate("SLT_RouteBuilder.java", "CustomRouteBuilder.java", additionalProperties, project, packageDir));
+
+        additionalProperties.put("REG_NAME", "operation");
+        additionalProperties.remove("NAME");
+        additionalProperties.put("NAME", "Operation");
+        psiClassList.add(createFromTemplate("SLT_Bean.java", "Operation.java", additionalProperties, project, packageDir));
+
+        additionalProperties.put("ROUTE_BUILDER", "CustomRouteBuilder");
+        additionalProperties.remove("REG_NAME");
+        additionalProperties.put("BEAN", "Operation");
+        additionalProperties.remove("NAME");
+        additionalProperties.put("NAME", "");
+        psiClassList.add(createFromTemplate("SLT_Main.java", "Main.java", additionalProperties, project, packageDir));
+        return psiClassList;
+    }
+
     private PsiFile createFromTemplate(String templateName, String fileName, Map<String, Object> additionalProperties, Project project, PsiDirectory psiDirectory) throws Exception {
         final FileTemplate template = FileTemplateManager.getInstance(project).getInternalTemplate(templateName);
         return FileTemplateUtil.createFromTemplate(template, fileName, additionalProperties, psiDirectory, null).getContainingFile();
     }
 
-    public void setPackage(PsiDirectory packageDir) {
-        for (PsiFile psiFile:packageDir.getFiles()) {
-            VirtualFile file = psiFile.getVirtualFile();
-            ApplicationManager.getApplication().runWriteAction(() -> {
-                try {
-                    String text;
-                    text = VfsUtil.loadText(file);
-                    VfsUtil.saveText(file, text.replace("${PACKAGE}", "package "));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-
+    public void setPackage(List<PsiFile> psiClassList, Project project) {
+        for (PsiFile pc : psiClassList) {
+            if(pc.getName().contains(".java")) {
+                ApplicationManager.getApplication().runWriteAction(() -> {
+                    OpenFileDescriptor descriptor = new OpenFileDescriptor(project, pc.getVirtualFile());
+                    FileEditorManager manager = FileEditorManager.getInstance(project);
+                    Editor editor = manager.openTextEditor(descriptor, true);
+                    String doc = editor.getDocument().getText();
+                    editor.getDocument().setText(doc.replace("${PACKAGE}", "package "));
+                    //manager.openFile(pc.getContainingFile().getVirtualFile(), true, true);
+                });
+            }
         }
     }
 
