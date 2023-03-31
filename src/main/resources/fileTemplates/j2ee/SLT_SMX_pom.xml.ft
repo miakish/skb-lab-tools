@@ -16,74 +16,9 @@
     <name>SMX :: K8S :: $reg_name </name>
 
     <properties>
-        <!--		DEFAULT:-->
-        <!--		REPLICAS_COUNT: 1-->
-        <!--		maxUnavailable: 0-->
-        <!--		maxSurge: 1-->
-        <!--		cpuReq: 100m-->
-        <!--		memReq: 128Mi-->
-        <!--		cpuLim: 200m-->
-        <!--		memLim: 300Mi-->
-        <!--		prof_vars:-->
-        <!--		- var:-->
-        <!--		name: FUSE_ENC-->
-        <!--		value: {{FUSE_ENC}}-->
-        <!--		- var:-->
-        <!--		name: JAVA_OPTS-->
-        <!--		value: "-Xmx150m -Xms64m"-->
-        <!--		HUGE:-->
-        <!--		REPLICAS_COUNT: 1-->
-        <!--		maxUnavailable: 0-->
-        <!--		maxSurge: 1-->
-        <!--		cpuReq: 100m-->
-        <!--		memReq: 664Mi-->
-        <!--		cpuLim: 200m-->
-        <!--		memLim: 1328Mi-->
-        <!--		prof_vars:-->
-        <!--		- var:-->
-        <!--		name: FUSE_ENC-->
-        <!--		value: {{FUSE_ENC}}-->
-        <!--		- var:-->
-        <!--		name: JAVA_OPTS-->
-        <!--		value: "-Xmx1124m -Xms448m"-->
-        <!--		HUGE2:-->
-        <!--		REPLICAS_COUNT: 2-->
-        <!--		maxUnavailable: 1-->
-        <!--		maxSurge: 1-->
-        <!--		cpuReq: 100m-->
-        <!--		memReq: 664Mi-->
-        <!--		cpuLim: 200m-->
-        <!--		memLim: 1328Mi-->
-        <!--		prof_vars:-->
-        <!--		- var:-->
-        <!--		name: FUSE_ENC-->
-        <!--		value: {{FUSE_ENC}}-->
-        <!--		- var:-->
-        <!--		name: JAVA_OPTS-->
-        <!--		value: "-Xmx1124m -Xms448m"-->
-        <!--		TINY:-->
-        <!--		REPLICAS_COUNT: 1-->
-        <!--		maxUnavailable: 0-->
-        <!--		maxSurge: 1-->
-        <!--		cpuReq: 100m-->
-        <!--		memReq: 256Mi-->
-        <!--		cpuLim: 200m-->
-        <!--		memLim: 512Mi-->
-        <!--		prof_vars:-->
-        <!--		- var:-->
-        <!--		name: FUSE_ENC-->
-        <!--		value: {{FUSE_ENC}}-->
-        <!--		- var:-->
-        <!--		name: JAVA_OPTS-->
-        <!--		value: "-Xmx309m -Xms128m"-->
-        <!-- DEFAULT -->
-        <!-- HUGE -->
-        <!-- HUGE2 -->
-        <!-- TINY -->
     #if(${DEPLOY_PROFILE} != $null && ${DEPLOY_PROFILE}!='DEFAULT' )
         <DEPLOY_PROFILE>${DEPLOY_PROFILE}</DEPLOY_PROFILE>
     #end
-
         <maven-compiler-plugin-version>3.8.1</maven-compiler-plugin-version>
         <maven-shade-plugin-verion>3.2.0</maven-shade-plugin-verion>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ssZ</maven.build.timestamp.format>

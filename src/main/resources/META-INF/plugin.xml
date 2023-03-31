@@ -46,6 +46,8 @@
     <depends>Git4Idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <projectConfigurable groupId="tools" displayName="SKB LAB Tools" id="poidem-generator" instance="ru.skb.lab.intellij.plugins.ui.PluginSettingsConfigurable"/>
+        <projectService serviceImplementation="ru.skb.lab.intellij.plugins.ui.PluginSettings"/>
         <!-- Add your extensions here -->
         <fileTemplateGroup implementation="ru.skb.lab.intellij.plugins.template.FileTemplatesFactory"/>
     </extensions>
