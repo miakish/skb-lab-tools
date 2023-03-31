@@ -37,6 +37,8 @@
     <ul>
         <li>icon update</li>
         <li>new templates</li>
+        <li>new project module wizard</li>
+        <li>Jasypt encrypt/decrypt</li>
     </ul>
     ]]></change-notes>
 
