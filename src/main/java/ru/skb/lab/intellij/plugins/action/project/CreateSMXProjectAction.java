@@ -146,7 +146,9 @@ public class CreateSMXProjectAction extends AnAction {
     private List<PsiFile> createSmxK8sConfigFiles(PsiDirectory resourcesDir, Map<String, Object> additionalProperties, Project project) throws Exception {
         List<PsiFile> psiClassList = new ArrayList<>();
         additionalProperties.put("TEST", "true");
+        additionalProperties.put("STAND_TYPE", "etc");
         psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("etc")));
+        additionalProperties.remove("STAND_TYPE");
         psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("dev")));
         psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("test")));
         additionalProperties.remove("TEST");
@@ -163,7 +165,9 @@ public class CreateSMXProjectAction extends AnAction {
     private List<PsiFile> createSmxInvestConfigFiles(PsiDirectory resourcesDir, Map<String, Object> additionalProperties, Project project) throws Exception {
         List<PsiFile> psiClassList = new ArrayList<>();
         additionalProperties.put("TEST", "true");
+        additionalProperties.put("STAND_TYPE", "etc");
         psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("etc")));
+        additionalProperties.remove("STAND_TYPE");
         psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("test")));
         psiClassList.add(createFromTemplate("SLT_SMX_config.yml", "config.yml", additionalProperties, project, resourcesDir.findSubdirectory("test")));
         additionalProperties.remove("TEST");

@@ -4,6 +4,16 @@ port=5555
 
 service.enable=true
 
+#if(${JAVA_VERSION} && ${JAVA_VERSION}=='CryptoPro')
+#if(${STAND_TYPE} && ${STAND_TYPE}=='etc')
+key.src.dir=
+key.dst.dir=
+#else
+key.src.dir=/tmp/key
+key.dst.dir=/var/opt/cprocsp/keys/appUser/AUTH-KEY.000
+#end
+#end
+
 #if((${TEST} && ${TEST}=='true'))
 logging.level.com.itprofix=DEBUG
 logging.level.ADP=DEBUG
