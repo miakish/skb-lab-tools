@@ -9,6 +9,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import org.apache.commons.lang3.StringUtils;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jetbrains.annotations.NotNull;
 import ru.skb.lab.intellij.plugins.ui.PluginSettings;
 
@@ -45,10 +46,18 @@ public class JasyptEncryptAction extends AnAction {
         Editor editor = LangDataKeys.EDITOR.getData(dataContext);
         SelectionModel selectionModel = editor.getSelectionModel();
         String text = selectionModel.getSelectedText();
-        String returnValue = encryptor.encrypt(text);
-        final Project project = CommonDataKeys.PROJECT.getData(dataContext);
-        WriteCommandAction.writeCommandAction(project).run(() -> {
+        try {
+            String returnValue = encryptor.encrypt(text);
+            final Project project = CommonDataKeys.PROJECT.getData(dataContext);
+            WriteCommandAction.writeCommandAction(project).run(() -> {
                 editor.getDocument().replaceString(selectionModel.getSelectionStart(), selectionModel.getSelectionEnd(), returnValue);
-        });
+            });
+        } catch (Exception e) {
+            if (e.getClass().isAssignableFrom(EncryptionOperationNotPossibleException.class)) {
+                Messages.showMessageDialog("Encryption operation not possible", "Jasypt encrypt", Messages.getWarningIcon());
+            } else {
+                Messages.showMessageDialog(e.getLocalizedMessage(), "Jasypt encrypt", Messages.getWarningIcon());
+            }
+        }
     }
 }

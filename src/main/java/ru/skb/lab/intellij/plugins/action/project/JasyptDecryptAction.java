@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jetbrains.annotations.NotNull;
 import ru.skb.lab.intellij.plugins.ui.PluginSettings;
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 /**
  * newTemplate 30.03.2023
@@ -49,10 +50,18 @@ public class JasyptDecryptAction extends AnAction {
         Editor editor = LangDataKeys.EDITOR.getData(dataContext);
         SelectionModel selectionModel = editor.getSelectionModel();
         String text = selectionModel.getSelectedText();
-        String returnValue = encryptor.decrypt(text);
-        final Project project = CommonDataKeys.PROJECT.getData(dataContext);
-        WriteCommandAction.writeCommandAction(project).run(() -> {
-            editor.getDocument().replaceString(selectionModel.getSelectionStart(), selectionModel.getSelectionEnd(), returnValue);
-        });
+        try {
+            String returnValue = encryptor.decrypt(text);
+            final Project project = CommonDataKeys.PROJECT.getData(dataContext);
+            WriteCommandAction.writeCommandAction(project).run(() -> {
+                editor.getDocument().replaceString(selectionModel.getSelectionStart(), selectionModel.getSelectionEnd(), returnValue);
+            });
+        } catch (Exception e) {
+            if (e.getClass().isAssignableFrom(EncryptionOperationNotPossibleException.class)) {
+                Messages.showMessageDialog("Decryption operation not possible", "Jasypt decrypt", Messages.getWarningIcon());
+            } else {
+                Messages.showMessageDialog(e.getLocalizedMessage(), "Jasypt decrypt", Messages.getWarningIcon());
+            }
+        }
     }
 }
