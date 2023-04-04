@@ -35,16 +35,12 @@
 
     <change-notes><![CDATA[
     <ul>
-        <li>icon update</li>
-        <li>new templates</li>
-        <li>new project module wizard</li>
-        <li>Jasypt encrypt/decrypt</li>
+        <li>Base64 encode/decode</li>
     </ul>
     ]]></change-notes>
 
     <depends>com.intellij.modules.java</depends>
     <depends>com.intellij.modules.ultimate</depends>
-    <depends>com.intellij.modules.database</depends>
     <depends>Git4Idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
@@ -55,21 +51,26 @@
     </extensions>
 
     <actions>
-        <group id="org.jetbrains.tutorials.actions.GroupedActions" text="SKB LAB Tools" popup="true" icon="/META-INF/actionIcon.svg">
+        <group id="ru.skb.lab.intellij.plugins.GroupedActions" text="SKB LAB Tools" popup="true" icon="/META-INF/actionIcon.svg">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="WeighingNewGroup"/>
-            <action id="smxFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.SmxFileTemplate" text="Create from SMX template" description="Create from SMX template" />
-            <action id="createSmxBaseBeans" class="ru.skb.lab.intellij.plugins.action.project.CreateSmxBaseBeansAction" text="Create Main/RouteBuilder/Bean" description="create Main/RouteBuilder/Bean"/>
-            <action id="projectTemplate" class="ru.skb.lab.intellij.plugins.action.project.CreateSMXProjectAction" text="Create SMX service" description="Create SMX project" />
+            <action id="ru.skb.lab.intellij.plugins.SmxFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.SmxFileTemplate" text="Create from SMX template" description="Create from SMX template" />
+            <action id="ru.skb.lab.intellij.plugins.CreateSmxBaseBeansAction" class="ru.skb.lab.intellij.plugins.action.project.CreateSmxBaseBeansAction" text="Create Main/RouteBuilder/Bean" description="create Main/RouteBuilder/Bean"/>
+            <action id="ru.skb.lab.intellij.plugins.CreateSMXProjectAction" class="ru.skb.lab.intellij.plugins.action.project.CreateSMXProjectAction" text="Create SMX service" description="Create SMX project" />
             <separator/>
-            <action id="socFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.SocFileTemplate" text="Create from SOC template" description="Create from SMX template" />
+            <action id="ru.skb.lab.intellij.plugins.socFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.SocFileTemplate" text="Create from SOC template" description="Create from SMX template" />
         </group>
 
-        <action id="jasyptEncryptAction" class="ru.skb.lab.intellij.plugins.action.project.JasyptEncryptAction" text="Jasypt encrypt" description="Jasypt encrypt" icon="/META-INF/actionIcon.svg">
+        <action id="ru.skb.lab.intellij.plugins.JasyptEncryptAction" class="ru.skb.lab.intellij.plugins.action.project.JasyptEncryptAction" text="Jasypt encrypt" description="Jasypt encrypt" icon="/META-INF/actionIcon.svg">
             <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="Copy.Paste.Special"/>
         </action>
-        <action id="jasyptDecryptAction" class="ru.skb.lab.intellij.plugins.action.project.JasyptDecryptAction" text="Jasypt decrypt" description="Jasypt decrypt" icon="/META-INF/actionIcon.svg">
-            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="jasyptEncryptAction"/>
+        <action id="ru.skb.lab.intellij.plugins.JasyptDecryptAction" class="ru.skb.lab.intellij.plugins.action.project.JasyptDecryptAction" text="Jasypt decrypt" description="Jasypt decrypt" icon="/META-INF/actionIcon.svg">
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="ru.skb.lab.intellij.plugins.JasyptEncryptAction"/>
         </action>
+        <group id="ru.skb.lab.intellij.plugins.Base64Group" text="Base64" popup="true" icon="/META-INF/actionIcon.svg">
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="ru.skb.lab.intellij.plugins.JasyptDecryptAction"/>
+            <action id="ru.skb.lab.intellij.plugins.base64EncryptAction" class="ru.skb.lab.intellij.plugins.action.project.Base64EncryptAction" text="Base64 encrypt" description="Base64 encrypt" icon="/META-INF/base64.svg"/>
+            <action id="ru.skb.lab.intellij.plugins.base64DecryptAction" class="ru.skb.lab.intellij.plugins.action.project.Base64DecryptAction" text="Base64 decrypt" description="Base64 decrypt" icon="/META-INF/base64.svg"/>
+        </group>
 
     </actions>
 </idea-plugin>
