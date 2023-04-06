@@ -6,6 +6,7 @@
 #end
 
 import com.itprofix.soa.cr.SMXCoreMain;
+import lombok.extern.slf4j.Slf4j;
 #if(${CRYPTOPRO_METRICS_ENABLED} && ${CRYPTOPRO_METRICS_ENABLED}=='true')
 import com.itprofix.lib.cryptopro.metrics.CryptoCertificateHelper;
 import com.itprofix.lib.cryptopro.metrics.CryptoEventListener;
@@ -16,6 +17,7 @@ import com.itprofix.lib.cryptopro.metrics.CryptoEventListener;
  * @author ${USER}
  * Main class
  */
+@Slf4j
 public class ${NAME}Main extends SMXCoreMain {
 
     public static void main(String... args) throws Exception {
@@ -33,7 +35,7 @@ public class ${NAME}Main extends SMXCoreMain {
     @Override
     public void doPreInit() {
         #if(${CRYPTOPRO_METRICS_ENABLED} && ${CRYPTOPRO_METRICS_ENABLED}=='true')
-            addConfigClass(CryptoCertificateHelper.class);
+        addConfigClass(CryptoCertificateHelper.class);
         #end
         #if(${JAVA_VERSION} && ${JAVA_VERSION}=='CryptoPro')
         addConfigClass(GOST.class);
@@ -77,7 +79,7 @@ public class ${NAME}Main extends SMXCoreMain {
         addMainListener(new CamelListener());
         #end
         #if(${CRYPTOPRO_METRICS_ENABLED} && ${CRYPTOPRO_METRICS_ENABLED}=='true')
-            setEventListener(CryptoEventListener.class);
+        setEventListener(CryptoEventListener.class);
         #end
 
     }

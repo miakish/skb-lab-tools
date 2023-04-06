@@ -36,6 +36,7 @@
     <change-notes><![CDATA[
     <ul>
         <li>Base64 encode/decode</li>
+        <li>fix error in create Main/RouteBuilder/Bean</li>
     </ul>
     ]]></change-notes>
 
