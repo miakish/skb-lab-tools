@@ -31,7 +31,7 @@ public class CustomFileTemplate extends CreateFromTemplateAction<PsiFile> {
     public static final Icon ICON = AllIcons.Nodes.Template;
 
     public CustomFileTemplate() {
-        super("Create from custom template", "Creates a java file from the specified template", ICON);
+        super("Create from custom template", "Creates a file from the specified template", ICON);
     }
 
     @Override
