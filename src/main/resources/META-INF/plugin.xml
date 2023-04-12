@@ -35,8 +35,7 @@
 
     <change-notes><![CDATA[
     <ul>
-        <li>Base64 encode/decode</li>
-        <li>fix error in create Main/RouteBuilder/Bean</li>
+        <li>load custom templates by prefix "SLT-"</li>
     </ul>
     ]]></change-notes>
 
@@ -59,6 +58,8 @@
             <action id="ru.skb.lab.intellij.plugins.CreateSMXProjectAction" class="ru.skb.lab.intellij.plugins.action.project.CreateSMXProjectAction" text="Create SMX service" description="Create SMX project" />
             <separator/>
             <action id="ru.skb.lab.intellij.plugins.socFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.SocFileTemplate" text="Create from SOC template" description="Create from SMX template" />
+            <separator/>
+            <action id="ru.skb.lab.intellij.plugins.CustomFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.CustomFileTemplate" text="Create from custom template" description="Create from custom template" />
         </group>
 
         <action id="ru.skb.lab.intellij.plugins.JasyptEncryptAction" class="ru.skb.lab.intellij.plugins.action.project.JasyptEncryptAction" text="Jasypt encrypt" description="Jasypt encrypt" icon="/META-INF/actionIcon.svg">

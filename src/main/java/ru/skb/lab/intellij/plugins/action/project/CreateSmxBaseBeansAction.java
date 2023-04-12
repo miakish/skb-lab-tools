@@ -6,9 +6,11 @@ import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiPackage;
 import org.jetbrains.annotations.NotNull;
 import ru.skb.lab.intellij.plugins.ui.AppType;
 import ru.skb.lab.intellij.plugins.ui.JavaType;
@@ -69,7 +71,16 @@ public class CreateSmxBaseBeansAction extends AnAction {
         }
         final Project project = CommonDataKeys.PROJECT.getData(dataContext);
         final IdeView view = LangDataKeys.IDE_VIEW.getData(dataContext);
-        return project != null && view != null && view.getDirectories().length != 0;
+        if (view == null) {
+            return false;
+        }
+        final PsiDirectory psiDirectory = view.getOrChooseDirectory();
+        if (psiDirectory == null || project == null) return false;
+        PsiPackage pkg = JavaDirectoryService.getInstance().getPackage(psiDirectory);
+        if (pkg == null) {
+            return false;
+        }
+        return view.getDirectories().length != 0;
     }
 
     @Override

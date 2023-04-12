@@ -34,9 +34,9 @@ public class JasyptDecryptAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent actionEvent) {
+        final DataContext dataContext = actionEvent.getDataContext();
+        final Project project = CommonDataKeys.PROJECT.getData(dataContext);
         if (StringUtils.isBlank(jasyptPassword)) {
-            final DataContext dataContext = actionEvent.getDataContext();
-            final Project project = CommonDataKeys.PROJECT.getData(dataContext);
             final PluginSettings poidemSettings = project.getService(PluginSettings.class);
             if(StringUtils.isNotBlank(poidemSettings.getJasyptPassword())) {
                 jasyptPassword = poidemSettings.getJasyptPassword();
@@ -46,13 +46,11 @@ public class JasyptDecryptAction extends AnAction {
                 return;
             }
         }
-        final DataContext dataContext = actionEvent.getDataContext();
         Editor editor = LangDataKeys.EDITOR.getData(dataContext);
         SelectionModel selectionModel = editor.getSelectionModel();
         String text = selectionModel.getSelectedText();
         try {
             String returnValue = encryptor.decrypt(text);
-            final Project project = CommonDataKeys.PROJECT.getData(dataContext);
             WriteCommandAction.writeCommandAction(project).run(() -> {
                 editor.getDocument().replaceString(selectionModel.getSelectionStart(), selectionModel.getSelectionEnd(), returnValue);
             });

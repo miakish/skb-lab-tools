@@ -3,9 +3,6 @@ package ru.skb.lab.intellij.plugins.action.project;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.actions.CreateFileFromTemplateDialog;
 import com.intellij.ide.actions.JavaCreateTemplateInPackageAction;
-import com.intellij.ide.fileTemplates.FileTemplate;
-import com.intellij.ide.fileTemplates.FileTemplateManager;
-import com.intellij.ide.fileTemplates.ui.CreateFromTemplateDialog;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.PsiClass;
@@ -20,7 +17,6 @@ import ru.skb.lab.intellij.plugins.util.Util;
 import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * main 26.03.2023
@@ -32,9 +28,13 @@ public class SocFileTemplate extends JavaCreateTemplateInPackageAction<PsiClass>
 
     public static final String ACTION_TITLE = "New java file";
 
-    public Map<String, String> templateImpls= Map.of("SLT_SOC_Component.java", "SLT_SOC_ComponentImpl.java",
-            "SLT_SOC_Repository.java", "SLT_SOC_RepositoryImpl.java",
-            "SLT_SOC_Service.java", "SLT_SOC_ServiceBean.java");
+    public Map<String, String> templateImpls= Map.of(
+            "SLT_SOC_Component.java",
+            "SLT_SOC_ComponentImpl.java",
+            "SLT_SOC_Repository.java",
+            "SLT_SOC_RepositoryImpl.java",
+            "SLT_SOC_Service.java",
+            "SLT_SOC_ServiceBean.java");
 
     public static final Icon ICON = IconManager.getInstance().getIcon("/META-INF/soc.svg", FileTemplatesFactory.class);
 

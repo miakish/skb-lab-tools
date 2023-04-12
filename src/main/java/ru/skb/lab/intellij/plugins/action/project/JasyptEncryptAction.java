@@ -1,6 +1,8 @@
 package ru.skb.lab.intellij.plugins.action.project;
 
 import com.intellij.ide.IdeView;
+import com.intellij.ide.fileTemplates.FileTemplate;
+import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
@@ -30,9 +32,9 @@ public class JasyptEncryptAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent actionEvent) {
+        final DataContext dataContext = actionEvent.getDataContext();
+        final Project project = CommonDataKeys.PROJECT.getData(dataContext);
         if (StringUtils.isBlank(jasyptPassword)) {
-            final DataContext dataContext = actionEvent.getDataContext();
-            final Project project = CommonDataKeys.PROJECT.getData(dataContext);
             final PluginSettings poidemSettings = project.getService(PluginSettings.class);
             if(StringUtils.isNotBlank(poidemSettings.getJasyptPassword())) {
                 jasyptPassword = poidemSettings.getJasyptPassword();
@@ -42,13 +44,11 @@ public class JasyptEncryptAction extends AnAction {
                 return;
             }
         }
-        final DataContext dataContext = actionEvent.getDataContext();
         Editor editor = LangDataKeys.EDITOR.getData(dataContext);
         SelectionModel selectionModel = editor.getSelectionModel();
         String text = selectionModel.getSelectedText();
         try {
             String returnValue = encryptor.encrypt(text);
-            final Project project = CommonDataKeys.PROJECT.getData(dataContext);
             WriteCommandAction.writeCommandAction(project).run(() -> {
                 editor.getDocument().replaceString(selectionModel.getSelectionStart(), selectionModel.getSelectionEnd(), returnValue);
             });

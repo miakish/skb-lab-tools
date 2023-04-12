@@ -228,7 +228,7 @@ public class CreateSMXProjectAction extends AnAction {
     public void update(@NotNull AnActionEvent anActionEvent) {
         anActionEvent.getPresentation().setIcon(AllIcons.Actions.ModuleDirectory);
         PsiElement psiElement = anActionEvent.getData(LangDataKeys.PSI_ELEMENT);
-        if (!(psiElement.getClass().isAssignableFrom(PsiJavaDirectoryImpl.class))) {
+        if (psiElement==null || !(psiElement.getClass().isAssignableFrom(PsiJavaDirectoryImpl.class))) {
             anActionEvent.getPresentation().setVisible(false);
         }
         super.update(anActionEvent);
