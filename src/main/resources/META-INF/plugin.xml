@@ -35,7 +35,7 @@
 
     <change-notes><![CDATA[
     <ul>
-        <li>load custom templates by prefix "SLT-"</li>
+        <li>fix smx templates</li>
     </ul>
     ]]></change-notes>
 

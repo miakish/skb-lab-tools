@@ -63,6 +63,17 @@ public class SmxFileTemplate extends JavaCreateTemplateInPackageAction<PsiClass>
         additionalProperties.put("GIT_BRANCH", Util.getGitBranch(project));
         additionalProperties.put("BEAN", "");
         additionalProperties.put("ROUTE_BUILDER", "");
+        additionalProperties.put("COMMENT", "");
+        additionalProperties.put("JAVA_VERSION", "JAVA_11");
+        additionalProperties.put("PROJECT_PACKAGE", "");
+        additionalProperties.put("ACTIVEMQ_ENABLED", String.valueOf(true));
+        additionalProperties.put("SSLCONTEXT_ENABLED", String.valueOf(true));
+        additionalProperties.put("JDBCTEMPLATE_ENABLED", String.valueOf(false));
+        additionalProperties.put("SQLCOMPONENT_ENABLED", String.valueOf(false));
+        additionalProperties.put("CRYPTOPRO_METRICS_ENABLED", String.valueOf(false));
+        additionalProperties.put("DATASOURCE_ENABLED", String.valueOf(false));
+        additionalProperties.put("KAFKACOMPONENT_ENABLED", String.valueOf(false));
+        additionalProperties.put("HTTPCLIENTCONFIGURER_ENABLED", String.valueOf(false));
         return JavaDirectoryService.getInstance().createClass(dir, className, templateName, true, additionalProperties);
     }
 

@@ -40,7 +40,7 @@
         <jdk-image>app-registry01.corp.skbbank.ru/smx/openjdk11/openjdk11:jre-11.0.11_9</jdk-image>
         <docker-maven-plugin-version>0.34.1</docker-maven-plugin-version>
     #end
-        <main-class><!--com.itprofix.smxk8s.Main-->${PROJECT_PACKAGE}.Main</main-class>
+        <main-class>${PROJECT_PACKAGE}.Main</main-class>
         <maven.test.skip>false</maven.test.skip>
         <final-name>#[[${project.groupId}.${project.artifactId}-${project.version}]]#</final-name>
         <project.build.sourceEncoding>#[[${encoding}]]#</project.build.sourceEncoding>
@@ -155,11 +155,14 @@
                             <finalName>#[[${final-name}]]#</finalName>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/cxf/bus-extensions.txt</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>META-INF/services/org/apache/camel/TypeConverterLoader</resource>
                                 </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <!-- add Main-Class to manifest file -->
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
                                         <Main-Class>#[[${main-class}]]#</Main-Class>
                                         <artifact>#[[${final-name}]]#</artifact>
@@ -178,6 +181,9 @@
                                     <artifact>*:*</artifact>
                                     <excludes>
                                         <exclude>**/Log4j2Plugins.dat</exclude>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
@@ -230,33 +236,35 @@
                                     <descriptorRef>artifact</descriptorRef>
                                 </assembly>
                                 <env>
-                                    <!--<JAVA_OPTS>-Xmx256m -Xms128m</JAVA_OPTS>-->
                                     <APP_OPTS>
                                         -Djava.security.egd=file:/dev/./urandom
                                         -XX:+UnlockExperimentalVMOptions
                                     #if(${JAVA_VERSION} == 'CryptoPro' || ${JAVA_VERSION} == '8')
-                                        -XX:+UseCGroupMemoryLimitForHeap <!--java-version = 8-->
+                                        -XX:+UseCGroupMemoryLimitForHeap
                                     #end
                                         -Dconfig.location=file:/conf/app.properties
                                         -Dmars.location=file:/mars/mars.cfg
                                     #if(${JAVA_VERSION} == 'CryptoPro')
-                                        -Djava.util.prefs.systemRoot=$JAVA_HOME/jre/.systemPrefs
-                                        -Djava.util.prefs.userRoot=$JAVA_HOME/jre/.userPrefs
+                                        #[[-Djava.util.prefs.systemRoot=$JAVA_HOME/jre/.systemPrefs]]#
+                                        #[[-Djava.util.prefs.userRoot=$JAVA_HOME/jre/.userPrefs]]#
                                     #end
                                     </APP_OPTS>
                                 </env>
                                 <runCmds>
-                                    <run>addgroup -g 1000 -S appUser</run>
-                                    <run>adduser -u 1000 -S -G appUser appUser</run>
                                 #if(${JAVA_VERSION} == 'CryptoPro')
-                                    <run>mkdir -p $JAVA_HOME/jre/.systemPrefs</run>
-                                    <run>chmod -R 777 $JAVA_HOME/jre/.systemPrefs</run>
-                                    <run>chown -R appUser:appUser $JAVA_HOME/jre/.systemPrefs</run>
-                                    <run>mkdir -p $JAVA_HOME/jre/.userPrefs</run>
-                                    <run>chmod -R 777 $JAVA_HOME/jre/.userPrefs</run>
-                                    <run>chown -R appUser:appUser $JAVA_HOME/jre/.userPrefs</run>
+                                    <run>groupadd -g 1000 -r appUser</run>
+                                    <run>useradd -u 1000 -r -g appUser appUser</run>
+                                    #[[ <run>mkdir -p $JAVA_HOME/jre/.systemPrefs</run>]]#
+                                    #[[<run>chmod -R 777 $JAVA_HOME/jre/.systemPrefs</run>]]#
+                                    #[[<run>chown -R appUser:appUser $JAVA_HOME/jre/.systemPrefs</run>]]#
+                                    #[[<run>mkdir -p $JAVA_HOME/jre/.userPrefs</run>]]#
+                                    #[[<run>chmod -R 777 $JAVA_HOME/jre/.userPrefs</run>]]#
+                                    #[[<run>chown -R appUser:appUser $JAVA_HOME/jre/.userPrefs</run>]]#
                                     <run>mkdir -p /var/opt/cprocsp/keys/appUser/AUTH-KEY.000</run>
                                     <run>chown -R appUser:appUser /var/opt/cprocsp/keys/appUser</run>
+                                #else
+                                    <run>addgroup -g 1000 -S appUser</run>
+                                    <run>adduser -u 1000 -S -G appUser appUser</run>
                                 #end
                                 </runCmds>
                                 <user>appUser</user>
@@ -271,31 +279,79 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>#[[${docker-maven-plugin-version}]]#</version>
+                        <executions>
+                            <execution>
+                                <id>Build docker container</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <repositories>
         <repository>
             <id>skblab-maven</id>
-            <name>repos.skblab.ru-maven</name>
-            <url>https://artifactory.skblab.ru/artifactory/maven</url>
-            <snapshots>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
+            <name>artifactory.skblab.ru-maven</name>
+            <url>#[[${env.REPOS_URL}/maven]]#</url>
+        </repository>
+        <repository>
+            <id>skblab-maven-smx</id>
+            <name>artifactory.skblab.ru-maven-smx</name>
+            <url>#[[${env.REPOS_URL}/maven-smx]]#</url>
         </repository>
         <repository>
             <id>central_1</id>
-            <name>repos.skblab.ru-releases</name>
-            <url>https://artifactory.skblab.ru/artifactory/smx</url>
-            <snapshots>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
+            <name>artifactory.skblab.ru-releases</name>
+            <url>#[[${env.REPOS_URL}/smx]]#</url>
         </repository>
     </repositories>
 
     <pluginRepositories>
         <pluginRepository>
             <id>skblab-maven</id>
-            <name>repos.skblab.ru-maven</name>
-            <url>https://artifactory.skblab.ru/artifactory/maven</url>
+            <name>artifactory.skblab.ru-maven</name>
+            <url>#[[${env.REPOS_URL}/maven]]#</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>skblab-maven-smx</id>
+            <name>artifactory.skblab.ru-maven-smx</name>
+            <url>#[[${env.REPOS_URL}/maven-smx]]#</url>
         </pluginRepository>
     </pluginRepositories>
+
+    <distributionManagement>
+        <repository>
+            <id>central_1</id>
+            <name>artifactory.skblab.ru-releases</name>
+            <url>#[[${env.REPOS_URL}/smx]]#</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>artifactory.skblab.ru-snapshots</name>
+            <url>#[[${env.REPOS_URL}/smx]]#</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>
