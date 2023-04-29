@@ -1,0 +1,109 @@
+#if (${PROJECT_PACKAGE} && ${PROJECT_PACKAGE} != "")
+#[[${PACKAGE}]]# ${PROJECT_PACKAGE};
+#else
+    #if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+    #parse("File Header.java")
+#end
+
+import org.apache.camel.BindToRegistry;
+import org.apache.camel.CamelContext;
+import org.apache.camel.PropertyInject;
+import org.apache.camel.support.jsse.SSLContextParameters;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ru.CryptoPro.JCSP.JCSP;
+
+import javax.net.ServerSocketFactory;
+import javax.net.SocketFactory;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.Security;
+import java.util.logging.LogManager;
+
+/**
+ * ${GIT_BRANCH} ${DATE}
+ * @author ${USER}
+ * Настрока ГОСТ SSL
+*/
+public class GOST {
+    private static Logger log = LoggerFactory.getLogger(GOST.class);
+    private static final String UNDEFINED_VALUE = "<undefined>";
+    @PropertyInject( value = "gost.truststorePath")
+    String truststorePath;
+    @PropertyInject( value = "gost.truststorePass")
+    String truststorePass;
+    @PropertyInject( value = "gost.keystorePath",  defaultValue = UNDEFINED_VALUE)
+    String keystorePath;
+    @PropertyInject( value = "gost.keystorePass",  defaultValue = UNDEFINED_VALUE)
+    String keystorePass;
+
+    @BindToRegistry("gostNoopHostnameVerifier")
+    public HostnameVerifier getNoopHostnameVerifier(){
+        return new NoopHostnameVerifier();
+    }
+
+    @BindToRegistry("gostSslContextParameters")
+    public SSLContextParameters gostSSL() throws Exception{
+        return new GostSSLContextParameters();
+    }
+
+    public static void initSysProperties(){
+        //Восстанавливаем дефолтный ssl
+        Security.setProperty("ssl.KeyManagerFactory.algorithm", "SunX509");
+        Security.setProperty("ssl.TrustManagerFactory.algorithm", "PKIX");
+        Security.setProperty("ssl.SocketFactory.provider", "javax.net.DefaultSocketFactory");
+        Security.setProperty("ssl.ServerSocketFactory.provider", "javax.net.DefaultServerSocketFactor");
+
+        log.info("ssl.KeyManagerFactory.algorithm {} ", KeyManagerFactory.getDefaultAlgorithm());
+        log.info("ssl.TrustManagerFactory.algorithm {}", TrustManagerFactory.getDefaultAlgorithm());
+        log.info("ssl.SocketFactory.provider {} ", SocketFactory.getDefault().getClass().getName());
+        log.info("ssl.ServerSocketFactory.provider {} ", ServerSocketFactory.getDefault().getClass().getName());
+
+        //Настройки без которых ГОСТ ломается
+        System.setProperty("com.sun.security.enableCRLDP", "true");
+        System.setProperty("com.ibm.security.enableCRLDP", "true");
+        System.setProperty("tls_prohibit_disabled_validation", "false");
+
+
+        try{
+            LogManager.getLogManager().readConfiguration(Main.class.getResourceAsStream("/jul.properties"));
+        } catch (Exception e){
+            log.warn("cannot init JUL config for cryptopro", e);
+        }
+    }
+
+    class GostSSLContextParameters extends SSLContextParameters{
+        @Override
+        public SSLContext createSSLContext(CamelContext camelContext) {
+            log.info("creating GOST SSLContext");
+            try (InputStream inputStream = getClass().getResourceAsStream(truststorePath)) {
+                //хранилище сертификатов
+                KeyStore keyStore = KeyStore.getInstance(JCSP.HD_STORE_NAME, JCSP.PROVIDER_NAME);
+                keyStore.load(null, null);
+                KeyManagerFactory kmf = KeyManagerFactory.getInstance("GostX509", "JTLS");
+                kmf.init(keyStore, keystorePass.toCharArray());
+
+                //хранилище корневых сертификатов
+
+                KeyStore trustStore = KeyStore.getInstance(JCSP.CERT_STORE_NAME, JCSP.PROVIDER_NAME);
+                trustStore.load(inputStream, truststorePass.toCharArray());
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance("GostX509", "JTLS");
+                tmf.init(trustStore);
+
+                SSLContext sslCtx = SSLContext.getInstance("GostTLSv1.2"); // Защищенный контекст
+                sslCtx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+                sslCtx.getSupportedSSLParameters().setNeedClientAuth(false);
+
+                return sslCtx;
+            } catch (Exception e){
+                throw  new RuntimeException("Error while init gostSslContext", e);
+            }
+        }
+    }
+
+}

@@ -8,10 +8,13 @@ import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
+import com.intellij.ui.IconManager;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
+import ru.skb.lab.intellij.plugins.template.FileTemplatesFactory;
 import ru.skb.lab.intellij.plugins.util.Util;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,12 +23,14 @@ import java.util.Map;
  *
  * @author SSalnikov
  */
-public class MyFileTemplate extends JavaCreateTemplateInPackageAction<PsiClass> {
+public class SmxFileTemplate extends JavaCreateTemplateInPackageAction<PsiClass> {
 
     public static final String ACTION_TITLE = "New java file";
 
-    public MyFileTemplate() {
-        super("Create from template", "Creates a java file from the specified template", AllIcons.Nodes.TestGroup,true);
+    public static final Icon ICON = IconManager.getInstance().getIcon("/META-INF/smx.svg", FileTemplatesFactory.class);
+
+    public SmxFileTemplate() {
+        super("Create from SMX template", "Creates a java file from the specified template", ICON,true);
     }
 
     @Override
@@ -35,9 +40,9 @@ public class MyFileTemplate extends JavaCreateTemplateInPackageAction<PsiClass> 
             .addKind("Class", AllIcons.Nodes.Class, "SLT_Class.java")
             .addKind("Enum", AllIcons.Nodes.Enum, "SLT_Enum.java")
             .addKind("Interface", AllIcons.Nodes.Interface, "SLT_Interface.java")
-            .addKind("Bean", AllIcons.Nodes.Interface, "SLT_Bean.java")
+            .addKind("Bean", AllIcons.Nodes.Class, "SLT_Bean.java")
             .addKind("SMX Main", AllIcons.Actions.Run_anything, "SLT_Main.java")
-            .addKind("RouteBuilder", AllIcons.Nodes.Interface, "SLT_RouteBuilder.java")
+            .addKind("RouteBuilder", AllIcons.Nodes.Class, "SLT_RouteBuilder.java")
         ;
     }
 
@@ -58,6 +63,17 @@ public class MyFileTemplate extends JavaCreateTemplateInPackageAction<PsiClass> 
         additionalProperties.put("GIT_BRANCH", Util.getGitBranch(project));
         additionalProperties.put("BEAN", "");
         additionalProperties.put("ROUTE_BUILDER", "");
+        additionalProperties.put("COMMENT", "");
+        additionalProperties.put("JAVA_VERSION", "JAVA_11");
+        additionalProperties.put("PROJECT_PACKAGE", "");
+        additionalProperties.put("ACTIVEMQ_ENABLED", String.valueOf(true));
+        additionalProperties.put("SSLCONTEXT_ENABLED", String.valueOf(true));
+        additionalProperties.put("JDBCTEMPLATE_ENABLED", String.valueOf(false));
+        additionalProperties.put("SQLCOMPONENT_ENABLED", String.valueOf(false));
+        additionalProperties.put("CRYPTOPRO_METRICS_ENABLED", String.valueOf(false));
+        additionalProperties.put("DATASOURCE_ENABLED", String.valueOf(false));
+        additionalProperties.put("KAFKACOMPONENT_ENABLED", String.valueOf(false));
+        additionalProperties.put("HTTPCLIENTCONFIGURER_ENABLED", String.valueOf(false));
         return JavaDirectoryService.getInstance().createClass(dir, className, templateName, true, additionalProperties);
     }
 

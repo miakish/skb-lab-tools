@@ -1,0 +1,58 @@
+#if (${PROJECT_PACKAGE} && ${PROJECT_PACKAGE} != "")
+#[[${PACKAGE}]]# ${PROJECT_PACKAGE};
+#else
+    #if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+    #parse("File Header.java")
+#end
+
+import lombok.extern.slf4j.Slf4j;
+import org.apache.camel.main.BaseMainSupport;
+import org.apache.camel.main.MainListenerSupport;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
+/**
+ * ${GIT_BRANCH} ${DATE}
+ * @author ${USER}
+ * В контейнере необходимо копировать КриптоПРО хранилище с ключами в отдельную директорию
+ */
+@Slf4j
+public class CamelListener extends MainListenerSupport {
+
+    @Override
+    public void beforeConfigure(BaseMainSupport main){
+        String src = main.getCamelContext().resolvePropertyPlaceholders("{{key.src.dir}}");
+        String dest = main.getCamelContext().resolvePropertyPlaceholders("{{key.dst.dir}}");
+        if (StringUtils.isAnyBlank(src, dest)) log.warn("skip copying key container");
+        else {
+            try{
+                copyDir(src, dest);
+            }catch (Exception e){
+                throw new RuntimeException("error while copy dir", e);
+            }
+        }
+    }
+
+    public static void copyDir(String srcDir, String dstDir) throws IOException {
+        log.info("Coping key container ...");
+
+        File[] listOfFiles = (new File(srcDir)).listFiles();
+
+        Path destDir = Paths.get(dstDir);
+        if (listOfFiles != null) {
+            for (File file : listOfFiles) {
+                Files.copy(file.toPath(), destDir.resolve(file.getName()), StandardCopyOption.REPLACE_EXISTING);
+            }
+            log.info("Key container has been copied successfully");
+        } else {
+            log.warn("Nothing to do. The source dir is empty.");
+        }
+    }
+
+}

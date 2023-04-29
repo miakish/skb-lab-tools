@@ -6,39 +6,73 @@
     <description><![CDATA[
     <h1>Сreating Java classes using templates inside the plugin</h1>
     <br/>
-    Can generate Java files (automatic filling of the GIT_BRANCH variable):<br/>
+    Can generate Java files (automatic filling of the GIT_BRANCH variable).<br/>
+    Base templates:<br/>
     <ul>
         <li>Class</li>
         <li>Enum</li>
         <li>Interface</li>
+    </ul><br/>
+    SMX templates:<br/>
+    <ul>
         <li>Bean</li>
         <li>SMX Main</li>
         <li>RouteBuilder</li>
+    </ul><br/>
+    SOC templates:<br/>
+    <ul>
+        <li>Calculator</li>
+        <li>CalculatorTest</li>
+        <li>Component</li>
+        <li>ComponentImpl</li>
+        <li>Repository</li>
+        <li>RepositoryImpl</li>
+        <li>Service</li>
+        <li>ServiceBean</li>
     </ul>
     <br/>
     ]]></description>
 
     <change-notes><![CDATA[
     <ul>
-        <li>icon update</li>
+        <li>fix smx templates</li>
     </ul>
     ]]></change-notes>
 
     <depends>com.intellij.modules.java</depends>
     <depends>com.intellij.modules.ultimate</depends>
-    <depends>com.intellij.modules.database</depends>
     <depends>Git4Idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <projectConfigurable groupId="tools" displayName="SKB LAB Tools" id="poidem-generator" instance="ru.skb.lab.intellij.plugins.ui.PluginSettingsConfigurable"/>
+        <projectService serviceImplementation="ru.skb.lab.intellij.plugins.ui.PluginSettings"/>
         <!-- Add your extensions here -->
         <fileTemplateGroup implementation="ru.skb.lab.intellij.plugins.template.FileTemplatesFactory"/>
     </extensions>
 
     <actions>
-        <group id="org.jetbrains.tutorials.actions.GroupedActions" text="SKB LAB Tools" popup="true" icon="/META-INF/actionIcon.svg">
+        <group id="ru.skb.lab.intellij.plugins.GroupedActions" text="SKB LAB Tools" popup="true" icon="/META-INF/actionIcon.svg">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="WeighingNewGroup"/>
-            <action id="myFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.MyFileTemplate" text="Create from template" description="Create from template" />
-            <action id="createAll" class="ru.skb.lab.intellij.plugins.action.project.CreateAllAction" text="Create Main/RouteBuilder/Bean" description="create Main/RouteBuilder/Bean"/>
+            <action id="ru.skb.lab.intellij.plugins.SmxFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.SmxFileTemplate" text="Create from SMX template" description="Create from SMX template" />
+            <action id="ru.skb.lab.intellij.plugins.CreateSmxBaseBeansAction" class="ru.skb.lab.intellij.plugins.action.project.CreateSmxBaseBeansAction" text="Create Main/RouteBuilder/Bean" description="create Main/RouteBuilder/Bean"/>
+            <action id="ru.skb.lab.intellij.plugins.CreateSMXProjectAction" class="ru.skb.lab.intellij.plugins.action.project.CreateSMXProjectAction" text="Create SMX service" description="Create SMX project" />
+            <separator/>
+            <action id="ru.skb.lab.intellij.plugins.socFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.SocFileTemplate" text="Create from SOC template" description="Create from SMX template" />
+            <separator/>
+            <action id="ru.skb.lab.intellij.plugins.CustomFileTemplate" class="ru.skb.lab.intellij.plugins.action.project.CustomFileTemplate" text="Create from custom template" description="Create from custom template" />
         </group>
+
+        <action id="ru.skb.lab.intellij.plugins.JasyptEncryptAction" class="ru.skb.lab.intellij.plugins.action.project.JasyptEncryptAction" text="Jasypt encrypt" description="Jasypt encrypt" icon="/META-INF/actionIcon.svg">
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="Copy.Paste.Special"/>
+        </action>
+        <action id="ru.skb.lab.intellij.plugins.JasyptDecryptAction" class="ru.skb.lab.intellij.plugins.action.project.JasyptDecryptAction" text="Jasypt decrypt" description="Jasypt decrypt" icon="/META-INF/actionIcon.svg">
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="ru.skb.lab.intellij.plugins.JasyptEncryptAction"/>
+        </action>
+        <group id="ru.skb.lab.intellij.plugins.Base64Group" text="Base64" popup="true" icon="/META-INF/actionIcon.svg">
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="ru.skb.lab.intellij.plugins.JasyptDecryptAction"/>
+            <action id="ru.skb.lab.intellij.plugins.base64EncryptAction" class="ru.skb.lab.intellij.plugins.action.project.Base64EncryptAction" text="Base64 encrypt" description="Base64 encrypt" icon="/META-INF/base64.svg"/>
+            <action id="ru.skb.lab.intellij.plugins.base64DecryptAction" class="ru.skb.lab.intellij.plugins.action.project.Base64DecryptAction" text="Base64 decrypt" description="Base64 decrypt" icon="/META-INF/base64.svg"/>
+        </group>
+
     </actions>
 </idea-plugin>

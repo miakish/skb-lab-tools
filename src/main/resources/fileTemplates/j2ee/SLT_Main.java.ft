@@ -1,16 +1,30 @@
+#if (${PROJECT_PACKAGE} && ${PROJECT_PACKAGE} != "")
+#[[${PACKAGE}]]# ${PROJECT_PACKAGE};
+#else
 #if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
 #parse("File Header.java")
+#end
 
 import com.itprofix.soa.cr.SMXCoreMain;
+import lombok.extern.slf4j.Slf4j;
+#if(${CRYPTOPRO_METRICS_ENABLED} && ${CRYPTOPRO_METRICS_ENABLED}=='true')
+import com.itprofix.lib.cryptopro.metrics.CryptoCertificateHelper;
+import com.itprofix.lib.cryptopro.metrics.CryptoEventListener;
+#end
 
 /**
  * ${GIT_BRANCH} ${DATE}
  * @author ${USER}
  * Main class
  */
+@Slf4j
 public class ${NAME}Main extends SMXCoreMain {
 
     public static void main(String... args) throws Exception {
+        log.info("START MAIN");
+        #if(${JAVA_VERSION} && ${JAVA_VERSION}=='CryptoPro')
+        GOST.initSysProperties();
+        #end
         instance = new Main();
         startInstance(args);
     }
@@ -20,8 +34,19 @@ public class ${NAME}Main extends SMXCoreMain {
      */
     @Override
     public void doPreInit() {
-        #if (${BEAN} && ${BEAN} != "")addConfigClass(${BEAN}.class);#end
-        #if (${ROUTE_BUILDER} && ${ROUTE_BUILDER} != "")addRouteBuilder(${ROUTE_BUILDER}.class);#end
+        #if(${CRYPTOPRO_METRICS_ENABLED} && ${CRYPTOPRO_METRICS_ENABLED}=='true')
+        addConfigClass(CryptoCertificateHelper.class);
+        #end
+        #if(${JAVA_VERSION} && ${JAVA_VERSION}=='CryptoPro')
+        addConfigClass(GOST.class);
+        #end
+        #if (${BEAN} && ${BEAN} != "")
+        addConfigClass(${BEAN}.class);
+        #end
+        #if (${ROUTE_BUILDER} && ${ROUTE_BUILDER} != "")
+        addRouteBuilder(${ROUTE_BUILDER}.class);
+        #end
+
     }
 
     /**
@@ -29,7 +54,33 @@ public class ${NAME}Main extends SMXCoreMain {
      */
     public Main() {
         super();
+        #if((${ACTIVEMQ_ENABLED} && ${ACTIVEMQ_ENABLED}=='true') || (${BEAN} && ${BEAN} != ""))
         setCreateActiveMQComponent(true);
+        #end
+        #if((${SSLCONTEXT_ENABLED} && ${SSLCONTEXT_ENABLED}=='true') || (${BEAN} && ${BEAN} != ""))
         setCreateSSLContextParameters(true);
+        #end
+        #if(${JDBCTEMPLATE_ENABLED} && ${JDBCTEMPLATE_ENABLED}=='true')
+        setCreateJdbcTemplate(true);
+        #end
+        #if(${SQLCOMPONENT_ENABLED} && ${SQLCOMPONENT_ENABLED}=='true')
+        setCreateSqlComponent(true);
+        #end
+        #if(${DATASOURCE_ENABLED} && ${DATASOURCE_ENABLED}=='true')
+        setCreateDataSource(true);
+        #end
+        #if(${KAFKACOMPONENT_ENABLED} && ${KAFKACOMPONENT_ENABLED}=='true')
+        setCreateKafkaComponent(true);
+        #end
+        #if(${HTTPCLIENTCONFIGURER_ENABLED} && ${HTTPCLIENTCONFIGURER_ENABLED}=='true')
+        setCreateHttpClientConfigurer(false);
+        #end
+        #if(${JAVA_VERSION} && ${JAVA_VERSION}=='CryptoPro')
+        addMainListener(new CamelListener());
+        #end
+        #if(${CRYPTOPRO_METRICS_ENABLED} && ${CRYPTOPRO_METRICS_ENABLED}=='true')
+        setEventListener(CryptoEventListener.class);
+        #end
+
     }
 }

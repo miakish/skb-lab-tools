@@ -1,0 +1,11 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+#parse("File Header.java")
+
+/**
+ * ${GIT_BRANCH} ${DATE}
+ * @author ${USER}
+ * ${COMMENT}
+ */
+public interface ${NAME}Service {
+    String NAME = "soc_${NAME}Service";
+}

@@ -1,0 +1,11 @@
+#ru.cryptopro used JUL for logging
+handlers = java.util.logging.ConsoleHandler
+
+java.util.logging.ConsoleHandler.level = ALL
+java.util.logging.ConsoleHandler.pattern = log.log
+java.util.logging.ConsoleHandler.formatter =java.util.logging.SimpleFormatter
+#[[java.util.logging.SimpleFormatter.format=[%1$tF %1$tT] [%4$-7s] %5$s %n]]#
+
+#mapping levels http://www.slf4j.org/apidocs/org/slf4j/bridge/SLF4JBridgeHandler.html
+ru.cryptopro.level=INFO
+ru.CryptoPro.level=INFO

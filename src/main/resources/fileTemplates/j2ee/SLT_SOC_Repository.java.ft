@@ -1,0 +1,21 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+#parse("File Header.java")
+
+import ru.skblab.soc.entity.${NAME};
+
+import java.util.List;
+
+/**
+ * ${GIT_BRANCH} ${DATE}
+ * @author ${USER}
+ * ${COMMENT}
+ */
+public interface ${NAME}Repository {
+    String NAME = "soc_${NAME}Repository";
+
+    ${NAME} save(${NAME} record);
+
+    void save(List<${NAME}> recordList);
+
+    void deleteAllRecords();
+}

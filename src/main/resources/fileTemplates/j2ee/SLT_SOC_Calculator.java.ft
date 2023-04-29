@@ -1,0 +1,60 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+#parse("File Header.java")
+
+import com.haulmont.cuba.core.global.Metadata;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import ru.skblab.soc.core.utils.json.RequestToObjectsUtils;
+import ru.skblab.soc.entity.FactorType;
+import ru.skblab.soc.entity.OrgVerification;
+import ru.skblab.soc.entity.RiskCriteriaPoint;
+import ru.skblab.soc.entity.ScoreResult;
+import ru.skblab.soc.factors.ParamsCalculatingFactor;
+import ru.skblab.soc.factors.scorecalculators.CriteriaCodeNotFoundException;
+import ru.skblab.soc.factors.scorecalculators.FactorScoreCalculator;
+import ru.skblab.soc.factors.scorecalculators.NoRequiredDataException;
+import ru.skblab.soc.service.requester.RequesterService;
+import ru.skblab.soc.verification.ScoreCalculator;
+
+import java.util.List;
+
+/**
+ * ${GIT_BRANCH} ${DATE}
+ * @author ${USER}
+ * ${COMMENT}
+ */
+@Component(${NAME}Calculator.NAME)
+public class ${NAME}Calculator extends FactorScoreCalculator implements ScoreCalculator {
+
+    public static final String NAME = "soc_${NAME}Calculator";
+    private final Logger log = LoggerFactory.getLogger(${NAME}Calculator.class);
+    private final Metadata metadata;
+    private final RequesterService requesterService;
+    private final RequestToObjectsUtils requestToObjectsUtils;
+
+    @Autowired
+    public ${NAME}Calculator(Metadata metadata, RequesterService requesterService, RequestToObjectsUtils requestToObjectsUtils) {
+        this.metadata = metadata;
+        this.requesterService = requesterService;
+        this.requestToObjectsUtils = requestToObjectsUtils;
+    }
+
+    @Override
+    public ScoreResult calculate(ParamsCalculatingFactor paramsCalculatingFactor) throws NoRequiredDataException, CriteriaCodeNotFoundException {
+        log.info("Начат расчет рискфактора ${FACTOR_TYPE}");
+        OrgVerification orgVerification = paramsCalculatingFactor.getOrgVerification();
+        List<RiskCriteriaPoint> points = paramsCalculatingFactor.getPoints();
+
+        String comment = null;
+        String criteriaCode = "";
+
+        return calcScoreResult(metadata, getType(), orgVerification, points, criteriaCode, comment);
+    }
+
+    @Override
+    public FactorType getType() {
+        return FactorType.${FACTOR_TYPE};
+    }
+}

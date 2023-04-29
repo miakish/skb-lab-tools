@@ -1,5 +1,9 @@
+#if (${PROJECT_PACKAGE} && ${PROJECT_PACKAGE} != "")
+#[[${PACKAGE}]]# ${PROJECT_PACKAGE};
+#else
 #if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
 #parse("File Header.java")
+#end
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.PropertyInject;

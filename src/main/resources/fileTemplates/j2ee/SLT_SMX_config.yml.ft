@@ -1,0 +1,5 @@
+port: 5555
+vars:
+  - var:
+    name: port
+    value: 5555
