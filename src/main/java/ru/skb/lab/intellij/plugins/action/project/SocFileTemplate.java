@@ -4,11 +4,11 @@ import com.intellij.icons.AllIcons;
 import com.intellij.ide.actions.CreateFileFromTemplateDialog;
 import com.intellij.ide.actions.JavaCreateTemplateInPackageAction;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.IconLoader;
 import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
-import com.intellij.ui.IconManager;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import ru.skb.lab.intellij.plugins.template.FileTemplatesFactory;
@@ -36,7 +36,7 @@ public class SocFileTemplate extends JavaCreateTemplateInPackageAction<PsiClass>
             "SLT_SOC_Service.java",
             "SLT_SOC_ServiceBean.java");
 
-    public static final Icon ICON = IconManager.getInstance().getIcon("/META-INF/soc.svg", FileTemplatesFactory.class);
+    public static final Icon ICON = IconLoader.getIcon("/META-INF/soc.svg", FileTemplatesFactory.class);
 
     public SocFileTemplate() {
         super("Create from SOC template", "Creates a java file from the specified template", ICON,true);
