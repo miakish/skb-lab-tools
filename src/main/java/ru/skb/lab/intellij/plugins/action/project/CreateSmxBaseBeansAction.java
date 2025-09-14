@@ -6,16 +6,11 @@ import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiPackage;
 import org.jetbrains.annotations.NotNull;
-import ru.skb.lab.intellij.plugins.ui.AppType;
-import ru.skb.lab.intellij.plugins.ui.JavaType;
-import ru.skb.lab.intellij.plugins.ui.ProfileType;
-import ru.skb.lab.intellij.plugins.ui.ProjectType;
 import ru.skb.lab.intellij.plugins.util.Util;
 
 import java.util.ArrayList;

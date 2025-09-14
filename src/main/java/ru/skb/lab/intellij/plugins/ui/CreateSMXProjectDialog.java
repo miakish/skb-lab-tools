@@ -1,6 +1,5 @@
 package ru.skb.lab.intellij.plugins.ui;
 
-import com.intellij.ide.fileTemplates.FileTemplate;
 import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
@@ -136,13 +135,13 @@ public class CreateSMXProjectDialog extends DialogWrapper {
             String groupId = "";
             switch (projectType) {
                 case SMX_K8S -> {
-                    createActiveMQComponentCheckBox.setSelected(true);
+                    createActiveMQComponentCheckBox.setSelected(false);
                     createSSLContextParametersCheckBox.setSelected(true);
                     createJdbcTemplateCheckBox.setSelected(false);
                     createSqlComponentCheckBox.setSelected(false);
                     addCryptoProMetricsCheckBox.setSelected(false);
                     createDataSourceCheckBox.setSelected(false);
-                    createKafkaComponentCheckBox.setSelected(false);
+                    createKafkaComponentCheckBox.setSelected(true);
                     createHttpClientConfigurerCheckBox.setSelected(false);
                     if (appTypeField.getSelectedIndex() >= 0) {
                         groupId = String.format(k8sBasePackage, ((AppType) appTypeField.getSelectedItem()).getValue());

@@ -8,9 +8,11 @@ service.enable=true
 #if(${STAND_TYPE} && ${STAND_TYPE}=='etc')
 key.src.dir=
 key.dst.dir=
+
 #else
 key.src.dir=/tmp/key
 key.dst.dir=/var/opt/cprocsp/keys/appUser/AUTH-KEY.000
+
 #end
 #end
 
@@ -18,30 +20,33 @@ key.dst.dir=/var/opt/cprocsp/keys/appUser/AUTH-KEY.000
 logging.level.com.itprofix=DEBUG
 logging.level.ADP=DEBUG
 logging.level.SRV=DEBUG
+
 #end
 
 #if((${DATASOURCE_ENABLED} && ${DATASOURCE_ENABLED}=='true') || (${JDBCTEMPLATE_ENABLED} && ${JDBCTEMPLATE_ENABLED}=='true'))
-db.datasource-type=hikari
 db.driver-class-name=org.postgresql.Driver
 db.url=
 db.user=
 db.password=
 db.pool-size=5
+
 #end
 
 #if((${ACTIVEMQ_ENABLED} && ${ACTIVEMQ_ENABLED}=='true'))
 amq.maxConnections=5
 amq.concurrentConsumers=5
+
 #end
 
 #if(${KAFKACOMPONENT_ENABLED} && ${KAFKACOMPONENT_ENABLED}=='true')
 kafka.hosts={{KAFKA_URL}}
-kafka.username=
+kafka.username=smx-${ARTIFACT_ID}
 kafka.password=
 kafka.security.protocol=SASL_SSL
 kafka.sasl.mechanism={{KAFKA_SASL_MECHANISM}}
 kafka.sasl.jaas.config={{KAFKA_SASL_JAAS_CONFIG}}
 kafka.trustStorePath={{trustStorePath}}
 kafka.trustStorePassword={{trustStorePassword}}
-kafka.group.id=in.${APP_TYPE}.${ARTIFACT_ID}
+kafka.group.id=smx-${APP_TYPE}.${ARTIFACT_ID}
+
 #end

@@ -22,8 +22,6 @@
         <maven-compiler-plugin-version>3.8.1</maven-compiler-plugin-version>
         <maven-shade-plugin-verion>3.2.0</maven-shade-plugin-verion>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ssZ</maven.build.timestamp.format>
-        <common-routes-version>3.4.3</common-routes-version>
-        <camel-version>3.14.1</camel-version>
         <encoding>UTF-8</encoding>
     #if(${JAVA_VERSION} == 'CryptoPro')
         <java-version>8</java-version>
@@ -31,13 +29,27 @@
         <java-version>${JAVA_VERSION}</java-version>
     #end
     #if(${JAVA_VERSION} == 'CryptoPro')
+        <common-routes-version>3.4.3</common-routes-version>
+        <camel-version>3.14.1</camel-version>
         <jdk-image>app-registry01.corp.skbbank.ru/smx/cryptopro-jdk:4.4</jdk-image>
         <docker-maven-plugin-version>0.27.2</docker-maven-plugin-version>
     #elseif(${JAVA_VERSION} == '8')
-        <jdk-image>app-registry01.corp.skbbank.ru/smx/openjdk/openjdk:jre8u292-b10</jdk-image>
+        <common-routes-version>3.4.3</common-routes-version>
+        <camel-version>3.14.1</camel-version>
+        <!--suppress UnresolvedMavenProperty -->
+        <jdk-image>${env.IMAGE_JAVA_8_DEFAULT}</jdk-image>
         <docker-maven-plugin-version>0.27.2</docker-maven-plugin-version>
     #elseif(${JAVA_VERSION} == '11')
-        <jdk-image>app-registry01.corp.skbbank.ru/smx/openjdk11/openjdk11:jre-11.0.11_9</jdk-image>
+        <common-routes-version>3.7.8</common-routes-version>
+        <camel-version>3.22.4</camel-version>
+        <!--suppress UnresolvedMavenProperty -->
+        <jdk-image>${env.IMAGE_JAVA_11_DEFAULT}</jdk-image>
+        <docker-maven-plugin-version>0.34.1</docker-maven-plugin-version>
+    #elseif(${JAVA_VERSION} == '17')
+        <common-routes-version>3.7.8</common-routes-version>
+        <camel-version>3.22.4</camel-version>
+        <!--suppress UnresolvedMavenProperty -->
+        <jdk-image>${env.IMAGE_JAVA_17_DEFAULT}</jdk-image>
         <docker-maven-plugin-version>0.34.1</docker-maven-plugin-version>
     #end
         <main-class>${PROJECT_PACKAGE}.Main</main-class>
@@ -71,7 +83,11 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        #if(${JAVA_VERSION} == '17')
+            <version>1.18.36</version>
+        #else
             <version>1.18.12</version>
+        #end
         </dependency>
         <dependency>
             <groupId>org.apache.camel</groupId>
@@ -247,6 +263,10 @@
                                     #if(${JAVA_VERSION} == 'CryptoPro')
                                         #[[-Djava.util.prefs.systemRoot=$JAVA_HOME/jre/.systemPrefs]]#
                                         #[[-Djava.util.prefs.userRoot=$JAVA_HOME/jre/.userPrefs]]#
+                                    #end
+                                    #if(${JAVA_VERSION} == '17')
+                                        --add-exports java.base/sun.security.util=ALL-UNNAMED
+                                        --add-exports java.base/sun.security.x509=ALL-UNNAMED
                                     #end
                                     </APP_OPTS>
                                 </env>

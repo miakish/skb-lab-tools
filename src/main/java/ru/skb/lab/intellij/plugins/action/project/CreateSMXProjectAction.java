@@ -14,12 +14,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VfsUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
 import com.intellij.psi.impl.file.PsiJavaDirectoryImpl;
 import org.jetbrains.annotations.NotNull;
 import ru.skb.lab.intellij.plugins.ui.CreateSMXProjectDialog;
@@ -28,7 +25,6 @@ import ru.skb.lab.intellij.plugins.ui.ProjectType;
 import ru.skb.lab.intellij.plugins.util.Util;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -124,7 +120,7 @@ public class CreateSMXProjectAction extends AnAction {
                 VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/dev"));
                 VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/test"));
                 VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/reg"));
-                VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/stage"));
+//                VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/stage"));
             } else if(projectType.equals(ProjectType.SMX_INVEST)) {
                 VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/etc"));
                 VfsUtil.createDirectories(String.format(root, path, projectName, "src/main/resources/test"));
@@ -153,12 +149,12 @@ public class CreateSMXProjectAction extends AnAction {
         psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("test")));
         additionalProperties.remove("TEST");
         psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("reg")));
-        psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("stage")));
+//        psiClassList.add(createFromTemplate("SLT_SMX_app.properties", "app.properties", additionalProperties, project, resourcesDir.findSubdirectory("stage")));
 
         psiClassList.add(createFromTemplate("SLT_SMX_config.yml", "config.yml", additionalProperties, project, resourcesDir.findSubdirectory("dev")));
         psiClassList.add(createFromTemplate("SLT_SMX_config.yml", "config.yml", additionalProperties, project, resourcesDir.findSubdirectory("test")));
         psiClassList.add(createFromTemplate("SLT_SMX_config.yml", "config.yml", additionalProperties, project, resourcesDir.findSubdirectory("reg")));
-        psiClassList.add(createFromTemplate("SLT_SMX_config.yml", "config.yml", additionalProperties, project, resourcesDir.findSubdirectory("stage")));
+//        psiClassList.add(createFromTemplate("SLT_SMX_config.yml", "config.yml", additionalProperties, project, resourcesDir.findSubdirectory("stage")));
         return psiClassList;
     }
 

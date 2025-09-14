@@ -12,6 +12,7 @@ import java.util.function.Supplier;
  */
 public enum JavaType {
 
+    JAVA_17  ("JAVA_17", () ->"Java 17", "17", ""),
     JAVA_11  ("JAVA_11", () ->"Java 11", "11", ""),
     JAVA_8("JAVA_8", () ->"Java 8", "8", ""),
     JAVA_CRYPTO_PRO ("JAVA_CRYPTO_PRO", () ->"java CryptoPro", "CryptoPro", "");

@@ -7,6 +7,7 @@
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.BindToRegistry;
+import org.apache.camel.CamelConfiguration;
 
 #set($reg_name = ${NAME})
 #set($reg_name = $reg_name.substring(0,1).toLowerCase() + $reg_name.substring(1))
@@ -18,6 +19,6 @@ import org.apache.camel.BindToRegistry;
  */
 @Slf4j
 @BindToRegistry("$reg_name")
-public class ${NAME} {
+public class ${NAME} implements CamelConfiguration {
 
 }
