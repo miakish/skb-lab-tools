@@ -1,21 +1,38 @@
-MIT License
+END USER LICENSE AGREEMENT (EULA) FOR SKB-LAB-TOOLS
 
-Copyright (c) 2020 SSalnikov
+Last Updated: September 14, 2025
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+By installing, downloading, or using the software product skb-lab-tools (the "Software"), you ("Licensee" or "You") agree to be bound by the terms of this End User License Agreement ("Agreement"). If You do not agree with any part of this Agreement, do not install or use the Software.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. Grant of License
+Subject to the terms of this Agreement, the licensor ("Owner") grants You a limited, non-exclusive, non-transferable, non-sublicensable, revocable license to use the compiled, executable version of the Software solely for its intended purpose as documented in official materials provided by the Owner. This license does not grant You any rights to the source code, design documents, build scripts, or any other underlying intellectual property.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+2. Restrictions
+You expressly agree not to:
+- Access, reverse engineer, decompile, disassemble, decrypt, or otherwise attempt to derive the source code of the Software;
+- Modify, adapt, translate, enhance, or create derivative works based on the Software;
+- Compile, recompile, or rebuild the Software from any form — including but not limited to object files, bytecode, or intermediate representations;
+- Distribute, sublicense, lease, rent, lend, or transfer the Software to any third party;
+- Use the Software for any purpose other than its explicitly documented and intended functionality (including but not limited to research, testing, exploitation, automation of unauthorized processes, or integration into competing systems);
+- Remove, alter, or obscure any copyright notices, trademarks, or proprietary markings contained in the Software;
+- Use the Software in violation of applicable laws or regulations.
+
+3. Ownership
+All rights, title, and interest in and to the Software, including all intellectual property rights (patents, copyrights, trade secrets, trademarks), remain exclusively with the Owner. The Software is licensed, not sold. This Agreement does not transfer ownership of any intellectual property.
+
+4. No Warranty
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE OWNER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+5. Termination
+This Agreement is effective until terminated. The Owner may terminate this license at any time, without notice, if You breach any term of this Agreement. Upon termination, You must cease all use of the Software and permanently delete all copies.
+
+6. Governing Law
+This Agreement shall be governed by and construed in accordance with the laws of the Russian Federation. Any disputes arising under this Agreement shall be subject to the exclusive jurisdiction of the courts located in Moscow, Russia.
+
+7. Miscellaneous
+- This Agreement constitutes the entire understanding between You and the Owner regarding the Software and supersedes all prior agreements.
+- Failure to enforce any provision of this Agreement shall not constitute a waiver of future enforcement.
+- If any provision of this Agreement is held invalid or unenforceable, the remaining provisions shall remain in full force and effect.
+
+© 2025 [miakish]. All rights reserved.
+skb-lab-tools is proprietary software. Use without explicit written permission from the owner is strictly prohibited.
