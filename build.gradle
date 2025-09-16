@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'ru.skb.lab.intellij.plugins'
-version '1.0.9'
+version '1.1.0'
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
@@ -24,9 +24,9 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = 'IU-2022.3.1'
+    version = '2022.3.1'
     pluginName = 'skb-lab-tools'
-    plugins = ['java', 'DatabaseTools', 'Git4Idea']
+    plugins = ['java', 'Git4Idea']
     updateSinceUntilBuild = false
 }
 
