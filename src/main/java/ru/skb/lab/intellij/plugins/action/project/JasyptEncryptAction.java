@@ -1,8 +1,5 @@
 package ru.skb.lab.intellij.plugins.action.project;
 
-import com.intellij.ide.IdeView;
-import com.intellij.ide.fileTemplates.FileTemplate;
-import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
@@ -14,6 +11,7 @@ import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jetbrains.annotations.NotNull;
 import ru.skb.lab.intellij.plugins.ui.PluginSettings;
+import ru.skb.lab.intellij.plugins.ui.PluginSettingsService;
 
 public class JasyptEncryptAction extends AnAction {
 
@@ -35,9 +33,9 @@ public class JasyptEncryptAction extends AnAction {
         final DataContext dataContext = actionEvent.getDataContext();
         final Project project = CommonDataKeys.PROJECT.getData(dataContext);
         if (StringUtils.isBlank(jasyptPassword)) {
-            final PluginSettings poidemSettings = project.getService(PluginSettings.class);
-            if(StringUtils.isNotBlank(poidemSettings.getJasyptPassword())) {
-                jasyptPassword = poidemSettings.getJasyptPassword();
+            final PluginSettings pluginSettings = PluginSettingsService.getSettings();
+            if(StringUtils.isNotBlank(pluginSettings.getJasyptPassword())) {
+                jasyptPassword = pluginSettings.getJasyptPassword();
                 encryptor.setPassword(jasyptPassword);
             } else {
                 Messages.showMessageDialog("Set a password!", "Jasypt encrypt", Messages.getInformationIcon());

@@ -11,6 +11,7 @@ import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jetbrains.annotations.NotNull;
 import ru.skb.lab.intellij.plugins.ui.PluginSettings;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
+import ru.skb.lab.intellij.plugins.ui.PluginSettingsService;
 
 /**
  * newTemplate 30.03.2023
@@ -37,9 +38,9 @@ public class JasyptDecryptAction extends AnAction {
         final DataContext dataContext = actionEvent.getDataContext();
         final Project project = CommonDataKeys.PROJECT.getData(dataContext);
         if (StringUtils.isBlank(jasyptPassword)) {
-            final PluginSettings poidemSettings = project.getService(PluginSettings.class);
-            if(StringUtils.isNotBlank(poidemSettings.getJasyptPassword())) {
-                jasyptPassword = poidemSettings.getJasyptPassword();
+            final PluginSettings pluginSettings = PluginSettingsService.getSettings();
+            if(StringUtils.isNotBlank(pluginSettings.getJasyptPassword())) {
+                jasyptPassword = pluginSettings.getJasyptPassword();
                 encryptor.setPassword(jasyptPassword);
             } else {
                 Messages.showMessageDialog("Set a password!", "Jasypt decrypt", Messages.getInformationIcon());

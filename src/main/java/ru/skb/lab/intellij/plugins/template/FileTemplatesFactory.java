@@ -27,7 +27,7 @@ public class FileTemplatesFactory implements FileTemplateGroupDescriptorFactory 
     descriptor.addTemplate(new FileTemplateDescriptor("SLT_RouteBuilder.java", AllIcons.Nodes.Class));
     descriptor.addTemplate(new FileTemplateDescriptor("SLT_SMX_CamelListener.java", AllIcons.Nodes.Class));
     descriptor.addTemplate(new FileTemplateDescriptor("SLT_SMX_GOST.java", AllIcons.Nodes.Class));
-    descriptor.addTemplate(new FileTemplateDescriptor("SLT_SMX_pom.xml", icons.OpenapiIcons.RepositoryLibraryLogo));
+    descriptor.addTemplate(new FileTemplateDescriptor("SLT_SMX_pom.xml", AllIcons.FileTypes.Any_type));
     descriptor.addTemplate(new FileTemplateDescriptor("SLT_SMX_app.properties", AllIcons.FileTypes.Properties));
 
     descriptor.addTemplate(new FileTemplateDescriptor("SLT_SOC_Calculator.java", AllIcons.Actions.GroupByClass));

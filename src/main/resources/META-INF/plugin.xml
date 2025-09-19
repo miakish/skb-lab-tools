@@ -40,12 +40,13 @@
     ]]></change-notes>
 
     <depends>com.intellij.modules.java</depends>
+<!--    <depends>com.intellij.modules.lang</depends>-->
 <!--    <depends>com.intellij.modules.ultimate</depends>-->
     <depends>Git4Idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <projectConfigurable groupId="tools" displayName="SKB LAB Tools" id="poidem-generator" instance="ru.skb.lab.intellij.plugins.ui.PluginSettingsConfigurable"/>
-        <projectService serviceImplementation="ru.skb.lab.intellij.plugins.ui.PluginSettings"/>
+        <applicationConfigurable groupId="tools" displayName="SKB LAB Tools" id="skb-generator" instance="ru.skb.lab.intellij.plugins.ui.PluginSettingsConfigurable"/>
+        <applicationService serviceImplementation="ru.skb.lab.intellij.plugins.ui.PluginSettingsService"/>
         <!-- Add your extensions here -->
         <fileTemplateGroup implementation="ru.skb.lab.intellij.plugins.template.FileTemplatesFactory"/>
     </extensions>
